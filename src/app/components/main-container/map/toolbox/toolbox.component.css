@@ -1,0 +1,78 @@
+.apparence-container {
+  border: solid 1px transparent;
+  padding: 4px;
+  background: #ebebeb;
+  box-shadow: -2px 1px 6px 0px rgb(0 0 0 / 20%);
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.main-container-street-view {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-container-street-view>button {
+  margin: 0px 2px;
+}
+
+.main-container>button {
+  margin: 2px 0px;
+}
+
+.sec-container {
+  /* position: absolute; */
+  left: -10px;
+  transform: translateX(-100%);
+}
+
+.sec-container>div>button {
+  margin: 2px 0px;
+}
+
+.img-icon {
+  height: 24px;
+  width: 24px;
+}
+
+
+.map-controls-button {
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+  color: rgb(60, 66, 87);
+  background-color: rgb(255, 255, 255);
+  box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 3px 5px;
+  display: inline-flex;
+  min-height: 28px;
+  transition: background-color .24s, box-shadow .24s;
+  border: solid 1px transparent;
+}
+
+
+.map-controls-button:hover {
+  box-shadow: rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(0 0 0 / 12%) 0px 1px 1px 0px, rgb(60 66 87 / 16%) 0px 0px 0px 1px, rgb(0 0 0 / 0%) 0px 0px 0px 0px, rgb(60 66 87 / 8%) 0px 3px 9px 0px, rgb(60 66 87 / 8%) 0px 2px 5px 0px;
+  border: solid 1px #3285ff;
+}
+
+.active-control-button {
+  background-color: #b1d0ff;
+  border: solid 1px #3285ff;
+}
+
+.adjust-icon {
+font-size: 18pt;
+line-height: 1em;
+color: #737373;
+}
+
+input[type=checkbox]:disabled+label {
+  color: #6f6f6f;
+}

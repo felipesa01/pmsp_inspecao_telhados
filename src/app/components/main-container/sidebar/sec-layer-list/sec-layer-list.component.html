@@ -1,0 +1,89 @@
+<div class="overlay-container" style="width: 100%;">
+    <div class="overlay-header w-100">
+        <div class="d-flex align-items-center" style="width: 100%; background-color: #2d80fa;">
+            <div class="col-auto me-auto m-2 p-0">Adicionar camadas</div>
+
+            <div class="col-auto me-auto p-0"></div>
+            <div class="col-auto mx-2 p-0 d-flex">
+                <button type="button" class="btn" style="padding: 1px;" matTooltip="Fechar" matTooltipPosition="right"
+                    (click)="close()">
+                    <i class="material-icons" style="font-size: 20px;width: 20px; color: rgb(48, 48, 48);">
+                        close
+                    </i>
+                </button>
+            </div>
+        </div>
+
+        <div class="p-1">
+            <input #input class="form-control p-1 w-100" style="font-size: 0.9em;" type="text" placeholder="Buscar"
+                (input)="filterChanged($event.target.value)" />
+        </div>
+
+        <div class="d-flex align-items-center justify-content-end p-1">
+
+            <button class="btn btn-sm btn-group btn-outline-secondary btn-topbar-edit" (click)="toglleExpandAll()"
+                [matTooltip]="isExpanded ? 'Comprimir todos' : 'Expandir todos'">
+                <span class="material-symbols-outlined">
+                    {{isExpanded ? 'collapse_all' : 'expand_all'}}
+                </span>
+            </button>
+
+            <!-- <button class="btn btn-sm btn-group btn-outline-secondary btn-topbar-edit" (click)="togllePrevisibility()"
+                [matTooltip]="layerPreview ? 'Desativar pré-visualização' : 'Ativar pré-visualização'">
+                <span class="material-symbols-outlined">
+                    {{layerPreview ? 'visibility_off' : 'visibility'}}
+                </span>
+            </button> -->
+
+        </div>
+    </div>
+
+    <div class="list-content w-100 p-1">
+
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+            <!-- Item do nodeList correspondente à CAMADAS -->
+            <mat-tree-node class="mat-tree-node-edit layer-node" *matTreeNodeDef="let node"
+                [ngStyle]="{'background-color': isAdded(node) ? '#e8ffe2' : ''}" matTreeNodeToggle matTreeNodePadding
+                (mouseenter)="layerPreview ? mouseenter(node) : None"
+                (mouseleave)="layerPreview ? mouseleave(node): None">
+                <div class="w-100 d-flex position-relative"
+                    (dblclick)="!isAdded(node) ? addLayer(node) : removeLayer(node)">
+                    <span class="material-icons-outlined no_selection"
+                        style="font-size: 1.2em;width: 20px; color: #adadad;">
+                        subdirectory_arrow_right
+                    </span>
+                    <span class="no_selection" [innerText]="getNameOfLayer(node)"></span>
+                    <div class="col"></div>
+                    <div class="col-auto p-0">
+                        <button type="button" class="btn btn-outline-light btn-edit"
+                            [matTooltip]="!isAdded(node) ? 'Adicionar' : 'Remover'" matTooltipPosition="right"
+                            (click)="!isAdded(node) ? addLayer(node) : removeLayer(node)">
+                            <i class="material-icons" style="font-size: 20px; width: 20px; color: #4d4d4d">
+                                {{!isAdded(node) ? 'add' : 'remove'}}
+                            </i>
+                        </button>
+                    </div>
+                    <div class="progress" style="height: 1px;position: absolute;bottom: 0px;width: 100%;left: 0px;" *ngIf="showLoad===node.item.id && layerPreview && !isAdded(node)">
+                        <div class="progress-bar" role="progressbar" [style.width.%]="timeLoad" aria-valuemin="0"
+                            aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+            </mat-tree-node>
+
+            <!-- Item do nodeList correspondente aos GRUPOS DE CAMADAS -->
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" class="mat-tree-node-edit layer-node">
+                <button matTreeNodeToggle type="button" class="btn btn-edit d-flex w-100">
+                    <i class="material-icons-outlined" style="font-size: 20px;width: 20px; color: #adadad;">
+                        {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </i>
+                    <span class="no_selection" style="font-weight: bold; font-size: 0.9em;">{{node.item.name}}</span>
+                </button>
+
+            </mat-tree-node>
+
+        </mat-tree>
+
+        <span *ngIf="dataSource.data.length == 0">Nenhum resultado encontrado</span>
+    </div>
+</div>

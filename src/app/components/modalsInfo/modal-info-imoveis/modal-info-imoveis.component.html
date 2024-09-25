@@ -1,0 +1,403 @@
+<app-modal-general-info (outputData)="setDataFromGeneral($event)" [showAttributes]="false">
+    <!-- Main container -->
+    <div *ngIf="dataFromGeneral">
+
+        <!-- Informações sobre o imóvel -->
+        <div class="d-flex justify-content-center pb-3">
+
+            <!-- Container sombreado -->
+            <div
+                style="border-radius: 0.3em; border: solid 1px #cececeaa; box-shadow: 2px 2px 4px 0px #0000001c; width: 100%;">
+
+                <!-- Dominialidade -->
+                <div *ngIf="typeMode == 'info'; else searchAndFilter1" class="d-flex justify-content-center p-1">
+                    <span>Imóvel {{dataFromGeneral.dataOrForm['dominialid']}}</span>
+                    <i class="material-icons-outlined ps-2" style="font-size: 1.5em;">
+                        {{dataFromGeneral.dataOrForm['dominialid'] === 'Privado' ? 'person' : 'groups'}}
+                    </i>
+                </div>
+
+                <ng-template #searchAndFilter1>
+                    <div class="d-flex align-items-center my-1">
+                        <!-- ROTULO DO CAMPO -->
+                        <span style="text-wrap: nowrap; font-size: 0.95em;"
+                            class="mx-1">{{formatedKeys['dominialid']}}</span>
+                        <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                        <app-aux-type-ahead id="dominialid" class="mx-1 w-100 d-flex " [attribute]="'dominialid'"
+                            [layerSource]="layerSource"
+                            [type]="isfeService.getType(profileForm, 'dominialid', 'translated')"
+                            [isRange]="isfeService.isRange(profileForm, 'dominialid')"
+                            [value]="isfeService.getControlValue(profileForm, 'dominialid', 'value')"
+                            (sendValue)="setValue('dominialid', $event)"></app-aux-type-ahead>
+
+                        <!-- SELETOR DO PREDICADO DE BUSCA -->
+                        <select [formControl]="isfeService.getControl(profileForm, 'dominialid', 'mode')"
+                            [id]="'select-'+'dominialid'" class="form-select form-select-sm mx-1"
+                            aria-label=".form-select-sm example"
+                            style="max-height: 2em; max-width: max-content; font-size: 0.85em;">
+                            <option value="0" selected>Excluir campo</option>
+                            <option
+                                *ngFor="let option of typeMapper[isfeService.getType(profileForm, 'dominialid', 'raw')].options"
+                                [value]="option.value">
+                                {{option.text}}</option>
+                        </select>
+                    </div>
+                </ng-template>
+
+
+                <hr class="hr-styled my-2">
+
+                <!-- Infos comuns -->
+                <div *ngIf="typeMode == 'info'" class="d-flex justify-content-center p-1">
+                    <!-- Geometria redundante -->
+                    <i *ngIf="dataFromGeneral.dataOrForm['geom_redun'] == true"
+                        class="material-icons-outlined d-flex align-self-center mx-1"
+                        style="font-size: 2em;color: #4d4d4d;border: 1px solid gray;border-radius: 20px;"
+                        [matTooltip]="dataFromGeneral.dataOrForm['geom_redun'] ? 'Unidade autônoma' : 'Unidade independente'">
+                        {{dataFromGeneral.dataOrForm['geom_redun'] == false ? 'home' : 'apartment'}}
+                    </i>
+
+                    <!-- Origem -->
+                    <span class="badge rounded-pill m-1 align-content-center"
+                        style="font-weight: normal; font-size: 0.9em;"
+                        [ngStyle]="{'background-color' : colorValues[dataFromGeneral.dataOrForm['origem']] ? colorValues[dataFromGeneral.dataOrForm['origem']] : 'gray'}"
+                        [matTooltip]="dataFromGeneral.dataOrForm['origem'] ? 'Origem' : ''">{{dataFromGeneral.dataOrForm['origem']
+                        ? dataFromGeneral.dataOrForm['origem'] : 'Origem desconhecida'}}
+                    </span>
+
+                    <!-- Modalidade -->
+                    <span *ngIf="dataFromGeneral.dataOrForm['modalidade']"
+                        class="badge rounded-pill bg-primary m-1 align-content-center" matTooltip="Modalidade"
+                        style="font-weight: normal; font-size: 0.9em;">{{dataFromGeneral.dataOrForm['modalidade'] ?
+                        dataFromGeneral.dataOrForm['modalidade'] : ''}}
+                    </span>
+
+                    <!-- Reurb -->
+                    <img *ngIf="dataFromGeneral.dataOrForm['reurb']" class="mx-1"
+                        src="./assets/images/logo_regulariza_parnaiba.jpg" alt=""
+                        matTooltip="Geometria do imóvel conforme REURB finalizada"
+                        style="height: 2.3em;border: 1px solid #8080804f;border-radius: 30px;">
+                </div>
+
+                <div *ngIf="typeMode == 'search'">
+                    <div *ngFor="let item_comun of ['geom_redun', 'origem', 'modalidade', 'reurb']">
+                        <div class="d-flex align-items-center my-1">
+                            <!-- ROTULO DO CAMPO -->
+                            <span style="text-wrap: nowrap; font-size: 0.95em;"
+                                class="mx-1">{{formatedKeys[item_comun]}}</span>
+                            <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                            <app-aux-type-ahead [id]="item_comun" class="mx-1 w-100 d-flex" [attribute]="item_comun"
+                                [layerSource]="layerSource"
+                                [type]="isfeService.getType(profileForm, item_comun, 'translated')"
+                                [isRange]="isfeService.isRange(profileForm, item_comun)"
+                                [value]="isfeService.getControlValue(profileForm, item_comun, 'value')"
+                                (sendValue)="setValue(item_comun, $event)"></app-aux-type-ahead>
+
+                            <!-- SELETOR DO PREDICADO DE BUSCA -->
+                            <select [formControl]="isfeService.getControl(profileForm, item_comun, 'mode')"
+                                [id]="'select-'+item_comun" class="form-select form-select-sm mx-1"
+                                aria-label=".form-select-sm example"
+                                style="max-height: 2em; max-width: max-content;font-size: 0.85em;">
+                                <option value="0" selected>Excluir campo</option>
+                                <option
+                                    *ngFor="let option of typeMapper[isfeService.getType(profileForm, item_comun, 'raw')].options"
+                                    [value]="option.value">
+                                    {{option.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="typeMode == 'filter'">
+                    <div *ngFor="let item_comun of ['origem', 'modalidade']">
+                        <div class="d-flex align-items-center my-1">
+                            <!-- ROTULO DO CAMPO -->
+                            <span style="text-wrap: nowrap; font-size: 0.95em;"
+                                class="mx-1">{{formatedKeys[item_comun]}}</span>
+                            <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                            <app-aux-type-ahead [id]="item_comun" class="mx-1 w-100 d-flex" [attribute]="item_comun"
+                                [layerSource]="layerSource"
+                                [type]="isfeService.getType(profileForm, item_comun, 'translated')"
+                                [isRange]="isfeService.isRange(profileForm, item_comun)"
+                                [value]="isfeService.getControlValue(profileForm, item_comun, 'value')"
+                                (sendValue)="setValue(item_comun, $event)"></app-aux-type-ahead>
+
+                            <!-- SELETOR DO PREDICADO DE BUSCA -->
+                            <select [formControl]="isfeService.getControl(profileForm, item_comun, 'mode')"
+                                [id]="'select-'+item_comun" class="form-select form-select-sm mx-1"
+                                aria-label=".form-select-sm example"
+                                style="max-height: 2em; max-width: max-content;font-size: 0.85em;">
+                                <option value="0" selected>Excluir campo</option>
+                                <option
+                                    *ngFor="let option of typeMapper[isfeService.getType(profileForm, item_comun, 'raw')].options"
+                                    [value]="option.value">
+                                    {{option.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="hr-styled">
+
+                <!-- Infos dos públicos -->
+                <div *ngIf="typeMode == 'info' && dataFromGeneral.dataOrForm['dominialid']; else searchAndFilter3" class="my-1">
+                    <div *ngFor="let key of keys_publicos">
+                        <div *ngIf="dataFromGeneral.dataOrForm[key] && key != 'b_ml_url'" class="px-2"
+                            style="font-size: 0.9em;">
+                            <span class="me-1"
+                                style="font-weight: 500;">{{dataFromGeneral['formatedKeys'][key]}}:</span>
+                            <span>{{dataFromGeneral.dataOrForm[key]}}</span>
+
+                            <!-- Botão do URL - Marco legal -->
+                            <button *ngIf="key ==='b_m_legal' && dataFromGeneral.dataOrForm['b_ml_url']"
+                                (click)="openUrlMarcoLegal()" matTooltip="Abrir legislação"
+                                class="align-items-center btn btn-group btn-sm d-flex ms-1 p-0 d-inline-flex">
+                                <i class="material-icons-outlined" style="font-size: 1.2em; color: #ff8d00">
+                                    link
+                                </i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="typeMode == 'search'">
+                    <hr class="hr-styled my-2">
+                    <div class="d-flex justify-content-center">
+                        <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1 fw-light">Válido para imóveis públicos</span>
+                    </div>
+                    <div *ngFor="let key of keys_publicos">
+                        <div class="d-flex align-items-center my-1">
+                            <!-- ROTULO DO CAMPO -->
+                            <span style="text-wrap: nowrap; font-size: 0.95em;"
+                                class="mx-1">{{formatedKeys[key]}}</span>
+                            <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                            <app-aux-type-ahead [id]="key" class="mx-1 w-100 d-flex" [attribute]="key"
+                                [layerSource]="layerSource" [type]="isfeService.getType(profileForm, key, 'translated')"
+                                [isRange]="isfeService.isRange(profileForm, key)"
+                                [value]="isfeService.getControlValue(profileForm, key, 'value')"
+                                (sendValue)="setValue(key, $event)"></app-aux-type-ahead>
+
+                            <!-- SELETOR DO PREDICADO DE BUSCA -->
+                            <select [formControl]="isfeService.getControl(profileForm, key, 'mode')"
+                                [id]="'select-'+key" class="form-select form-select-sm mx-1"
+                                aria-label=".form-select-sm example"
+                                style="max-height: 2em; max-width: max-content; font-size: 0.85em;">
+                                <option value="0" selected>Excluir campo</option>
+                                <option
+                                    *ngFor="let option of typeMapper[isfeService.getType(profileForm, key, 'raw')].options"
+                                    [value]="option.value">
+                                    {{option.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="typeMode == 'filter'">
+                    <hr class="hr-styled my-2">
+                    <div class="d-flex justify-content-center">
+                        <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1 fw-light">Válido para imóveis públicos</span>
+                    </div>
+                    <div *ngFor="let key of ['b_destinac', 'b_nome']">
+                        <div class="d-flex align-items-center my-1">
+                            <!-- ROTULO DO CAMPO -->
+                            <span style="text-wrap: nowrap; font-size: 0.95em;"
+                                class="mx-1">{{formatedKeys[key]}}</span>
+                            <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                            <app-aux-type-ahead [id]="key" class="mx-1 w-100 d-flex" [attribute]="key"
+                                [layerSource]="layerSource" [type]="isfeService.getType(profileForm, key, 'translated')"
+                                [isRange]="isfeService.isRange(profileForm, key)"
+                                [value]="isfeService.getControlValue(profileForm, key, 'value')"
+                                (sendValue)="setValue(key, $event)"></app-aux-type-ahead>
+
+                            <!-- SELETOR DO PREDICADO DE BUSCA -->
+                            <select [formControl]="isfeService.getControl(profileForm, key, 'mode')"
+                                [id]="'select-'+key" class="form-select form-select-sm mx-1"
+                                aria-label=".form-select-sm example"
+                                style="max-height: 2em; max-width: max-content; font-size: 0.85em;">
+                                <option value="0" selected>Excluir campo</option>
+                                <option
+                                    *ngFor="let option of typeMapper[isfeService.getType(profileForm, key, 'raw')].options"
+                                    [value]="option.value">
+                                    {{option.text}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+        <!-- Container cadastro, zoneamento e etc  -->
+        <div *ngIf="typeMode == 'info'; else cecamSearchOrFilter" style="line-height: 1.5em;">
+
+            <ul ngbNav #nav="ngbNav" class="nav-tabs" [destroyOnHide]="false">
+                <li [ngbNavItem]="1">
+                    <button ngbNavLink>Cadastro</button>
+                    <ng-template ngbNavContent>
+                        <!-- Infos CECAM -->
+                        <ng-container *ngIf="dataFromGeneral.dataOrForm['cod_imovel']; else semCadastro">
+                            <div *ngFor="let key of keys">
+                                <span class="me-1"
+                                    style="font-weight: 500;">{{dataFromGeneral['formatedKeys'][key]}}:</span>
+                                <span>{{dataFromGeneral.dataOrForm[key]}}</span>
+
+                                <button *ngIf="dataFromGeneral.dataOrForm['geom_redun'] && key === 'area_terre'"
+                                    (click)="openInfoAreaUnidadeAutoma()"
+                                    class="align-items-center btn btn-group btn-sm d-flex ms-1 p-0 d-inline-flex">
+                                    <i class="material-icons-outlined" style="font-size: 1.2em; color: red">
+                                        info
+                                    </i>
+                                </button>
+                            </div>
+                        </ng-container>
+                        <!-- Sem cadastro -->
+                        <ng-template #semCadastro>
+                            <div class="d-flex justify-content-center my-2">
+                                <span>Cadastro imobiliário desconhecido ou inexistente</span>
+                            </div>
+                        </ng-template>
+                    </ng-template>
+                </li>
+
+                <li [ngbNavItem]="2">
+                    <button (click)="getZonas()" ngbNavLink>Zoneamento</button>
+                    <ng-template ngbNavContent>
+                        <!-- Infos ZONEAMENTO -->
+
+                        <ng-container *ngIf="results">
+                            <div class="my-2">
+                                <span style="font-weight: bold;">{{results.length > 1 ? 'Neste imóvel incidem as zonas:'
+                                    : 'Neste imóvel incide a zona:'}}</span>
+                                <div *ngFor="let zona of results;">
+                                    <span style="font-size: 0.95em;">{{zona.properties.nome}}</span>
+                                </div>
+                            </div>
+
+                            <hr class="hr-styled">
+
+                            <div class="d-flex justify-content-center align-content-center my-2">
+                                <div id="map_zoneamento"
+                                    style="height: 300px; width: 100%; box-shadow: 2px 2px 4px 0px #0000001c;"></div>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="!results">
+                            <div class="skeleton skeleton-title mb-2"></div>
+                            <div class="skeleton skeleton-zona mb-1"></div>
+                            <div class="skeleton skeleton-zona"></div>
+                            <div class="skeleton skeleton-map mt-2"></div>
+
+                        </ng-container>
+
+                    </ng-template>
+                </li>
+
+                <!-- <li [ngbNavItem]="3">
+                    <button ngbNavLink>Teste</button>
+                    <ng-template ngbNavContent>
+                
+                        <ng-container *ngIf="profileForm">
+                            <form [formGroup]="profileForm" *ngIf="profileForm">
+                                <div *ngFor="let item of profileForm.controls | keyvalue; let n=index">
+                                    <label [for]="n">{{dataFromGeneral['formatedKeys'][item.key]}} </label>
+                                    <input style="height: 1.5em; width: -webkit-fill-available;" [id]="n" type="text" [formControlName]="item.key">
+                                </div>
+                            </form>
+                        </ng-container>
+                    </ng-template>
+                </li> -->
+            </ul>
+
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
+
+        <div *ngIf="typeMode == 'search'">
+            <div class="d-flex justify-content-center">
+                <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1 fw-light">Informações do cadastro imobilário</span>
+            </div>
+            <div *ngFor="let key of ['tributacao', 'matricula', 'loteamento', 'quadra', 'lote', 'logradouro', 'num', 'compleme', 'cep', 'nome_prop', 'cpf_prop', 'nome_comp', 'cpf_comp', 'testada', 'area_terre', 'area_const']">
+                <div class="d-flex align-items-center my-1">
+                    <!-- ROTULO DO CAMPO -->
+                    <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1">{{formatedKeys[key]}}</span>
+                    <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                    <app-aux-type-ahead [id]="key" class="mx-1 w-100 d-flex" [attribute]="key"
+                        [layerSource]="layerSource" [type]="isfeService.getType(profileForm, key, 'translated')"
+                        [isRange]="isfeService.isRange(profileForm, key)"
+                        [value]="isfeService.getControlValue(profileForm, key, 'value')"
+                        (sendValue)="setValue(key, $event)"></app-aux-type-ahead>
+
+                    <!-- SELETOR DO PREDICADO DE BUSCA -->
+                    <select [formControl]="isfeService.getControl(profileForm, key, 'mode')" [id]="'select-'+key"
+                        class="form-select form-select-sm mx-1" aria-label=".form-select-sm example"
+                        style="max-height: 2em; max-width: max-content; font-size: 0.85em;">
+                        <option value="0" selected>Excluir campo</option>
+                        <option *ngFor="let option of typeMapper[isfeService.getType(profileForm, key, 'raw')].options"
+                            [value]="option.value">
+                            {{option.text}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="typeMode == 'filter'">
+            <div class="d-flex justify-content-center">
+                <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1 fw-light">Informações do cadastro imobilário</span>
+            </div>
+            <div *ngFor="let key of ['loteamento', 'logradouro']">
+                <div class="d-flex align-items-center my-1">
+                    <!-- ROTULO DO CAMPO -->
+                    <span style="text-wrap: nowrap; font-size: 0.95em;" class="mx-1">{{formatedKeys[key]}}</span>
+                    <!-- COMPONENTE "AUX TYPE AHEAD" -->
+                    <app-aux-type-ahead [id]="key" class="mx-1 w-100 d-flex" [attribute]="key"
+                        [layerSource]="layerSource" [type]="isfeService.getType(profileForm, key, 'translated')"
+                        [isRange]="isfeService.isRange(profileForm, key)"
+                        [value]="isfeService.getControlValue(profileForm, key, 'value')"
+                        (sendValue)="setValue(key, $event)"></app-aux-type-ahead>
+
+                    <!-- SELETOR DO PREDICADO DE BUSCA -->
+                    <select [formControl]="isfeService.getControl(profileForm, key, 'mode')" [id]="'select-'+key"
+                        class="form-select form-select-sm mx-1" aria-label=".form-select-sm example"
+                        style="max-height: 2em; max-width: max-content; font-size: 0.85em;">
+                        <option value="0" selected>Excluir campo</option>
+                        <option *ngFor="let option of typeMapper[isfeService.getType(profileForm, key, 'raw')].options"
+                            [value]="option.value">
+                            {{option.text}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <form class="w-100" *ngIf="typeMode != 'info'" (ngSubmit)="onSubmit()">
+            <div class="p-2 d-flex justify-content-end">
+                <button *ngIf="dataObj.typeOfDialog == 'filter'" type="button" (click)="clearFilter()"
+                    class="btn btn-warning btn-sm mx-1">Limpar filtros</button>
+
+                <div aria-live="polite" toastContainer style="line-height: normal;"></div>
+
+                <button [disabled]="!isSearchable() || searchIsLoading" type="submit" class="btn btn-success btn-sm mx-1">
+
+                    <ng-container *ngIf="searchIsLoading; else bucarTitle">
+                        <div class="d-flex justify-content-center ">
+                            <div class="spinner-border text-light spinner-border-sm" role="status">
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-template #bucarTitle>
+                        <span>{{dataObj.typeOfDialog == 'search' ? 'Buscar' : 'Filtrar'}}</span>
+                    </ng-template>
+
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+</app-modal-general-info>

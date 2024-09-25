@@ -1,0 +1,58 @@
+<div class="apparence-container" [ngClass]="!streetViewIsOpen ? 'main-container' : 'main-container-street-view'">
+<!-- <div class="apparence-container" [ngClass]="!streetViewIsOpen ? 'main-container' : 'main-container-street-view'"> -->
+
+
+  <button *ngFor="let item of functionMapper | filterToolbox: {childOf: null}" [id]="item.id"
+    class="map-controls-button" (click)="doApply($event)"
+    [ngClass]="{'active-control-button' : isActive(item.id)}" [matTooltip]="item.tip"
+    matTooltipPosition="left">
+    <i *ngIf="item.icon.includes('fg-'); else iconGoogle" [class]="item.icon" class="adjust-icon"></i>
+    <ng-template #iconGoogle>
+      <span class="material-symbols-outlined adjust-icon" [innerHTML]="item.icon">
+      </span>
+    </ng-template>
+  </button>
+
+</div>
+
+
+<ng-template name="measuretool">
+  <div class="apparence-container" style="font-size: 0.9em; ">
+
+    <div class="d-flex justify-content-around">
+      <button *ngFor="let item of functionMapper | filterToolbox: {childOf: 'measuretool'}" [id]="item.id"
+        class="map-controls-button" (click)="doApply($event)"
+        [ngClass]="{'active-control-button' : activeTools.includes(item.id)}" [matTooltip]="item.tip"
+        matTooltipPosition="above">
+        <i [class]="item.icon" class="adjust-icon"></i>
+      </button>
+    </div>
+
+    <div>
+      <div class="d-flex mt-2">
+        <input id="multipleMeasure" [disabled]="!geomMeasure" class="mx-1" type="checkbox" [(ngModel)]="multipleMeasure"
+          (change)="changeMultpleMeasureTool()">
+        <label style="text-wrap: nowrap;" for="multipleMeasure">Múltiplas medições</label>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-outline-secondary btn-sm" style="padding: 0px 5px; width: 100%;" (click)="clearMeasureVector()">Limpar</button>
+  </div>
+
+</ng-template>
+
+<ng-template name="swipe">
+  <div class="apparence-container" style="font-size: 0.9em; ">
+
+    <div class="d-flex justify-content-around">
+      <button *ngFor="let item of functionMapper | filterToolbox: {childOf: 'swipe'}" [id]="item.id"
+        class="map-controls-button mx-1" (click)="doApply($event)"
+        [ngClass]="{'active-control-button' : activeTools.includes(item.id)}" [matTooltip]="item.tip"
+        matTooltipPosition="above">
+        <i [class]="item.icon" class="adjust-icon"></i>
+      </button>
+    </div>
+
+  </div>
+
+</ng-template>

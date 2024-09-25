@@ -1,0 +1,33 @@
+[mat-menu-item] {
+    min-height: 1em;
+}
+
+input[type=checkbox] {
+    transform: scale(0.7);
+}
+
+
+:host ::ng-deep .mat-mdc-menu-content {
+    padding: 1px 0px;
+}
+
+.btn-edit {
+    padding: 0px 0px;
+    border: 0px solid rgb(219, 219, 219);
+    border-radius: 20px;
+}
+
+    .btn-edit:hover {
+        background-color: #e6e6e6;
+    }
+
+.btn-icon {
+    color: #7a7a7a;
+    margin-right: 8px !important;
+}
+
+
+hr {
+    margin: 0.3em auto;
+
+  }

@@ -1,0 +1,16 @@
+<app-modal-general-info (outputData)="setDataFromGeneral($event)">
+
+    <!-- <div *ngIf="dataFromGeneral"> -->
+        <div *ngIf="dataFromGeneral && dataFromGeneral.typeMode == 'info'" class="d-flex justify-content-center align-items-center">
+            <button class="btn btn-sm btn-outline-dark mx-1" matTooltip="Adicionar como Camada" (click)="openImg(true)"
+                matTooltipPosition='above'>
+                <i class="fg-layer-2-add-o"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-dark mx-1" matTooltip="Adicionar como Mapabase"
+                (click)="openImg(false)" matTooltipPosition='above'>
+                <i class="fg-world-map"></i>
+            </button>
+        </div>
+    <!-- </div> -->
+
+</app-modal-general-info>

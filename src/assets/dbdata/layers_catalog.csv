@@ -1,0 +1,6 @@
+"gid","pk_name","tab_schema","tab_name","apelido","feat_apelido","filtraveis","auto_load","labels","tipo","fonte","categ_tema","acesso","columns_gs"
+8,"gid_imovel","camadas","imoveis","Imóveis","cod_imovel\ic_imovel",NULL,NULL,NULL,"wfs_geoserver","pmspwebgeo:imoveis","cadastro",NULL,"{dominialid,origem,modalidade}"
+10,"gid","camadas","unidades_escolares","Escolas","nome",NULL,NULL,NULL,"wfs_geoserver","pmspwebgeo:unidades_escolares","educacao",NULL,"{gestao}"
+11,"gid","camadas","abairramentos","Abairramentos","nome",NULL,NULL,NULL,"wfs_geoserver","pmspwebgeo:abairramentos","territorio",NULL,NULL
+12,"gid","camadas","ama","AMAs","nome",NULL,NULL,NULL,"wfs_geoserver","pmspwebgeo:ama","meio_ambiente",NULL,NULL
+13,"gid","camadas","parcelamentos","Parcelamentos","modalidade\nome",NULL,NULL,NULL,"wfs_geoserver","pmspwebgeo:parcelamentos","territorio",NULL,"{modalidade}"

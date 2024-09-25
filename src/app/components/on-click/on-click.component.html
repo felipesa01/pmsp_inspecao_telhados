@@ -1,0 +1,81 @@
+<ng-container *ngIf="isLoading">
+    <div class="d-flex justify-content-center p-1">
+        <div class="spinner-border text-primary spinner-border-sm" role="status" style="margin: 0px 4px;">
+        </div>
+    </div>
+</ng-container>
+
+<!-- <ng-template #mainMenu>
+    <app-menu-on-click [trigger]="'Teste'" [data]="dataToExport" [isRootNode]="true"></app-menu-on-click>
+</ng-template> -->
+
+<!-- 
+<ng-container *ngIf="isLoading" class="item-edit">
+    <div class="d-flex justify-content-center ">
+        <div class="spinner-border text-primary spinner-border-sm" role="status" style="margin: 0px 4px;">
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #overlay>
+    <app-menu-on-click [trigger]="'Teste'" [data]="dataToExport" [isRootNode]="true"></app-menu-on-click>
+</ng-template> -->
+
+<!-- Botão invisível que abre o menu. Disparado quando o componente é criado -->
+<!-- <button mat-button #menuTrigger="matMenuTrigger" [matMenuTriggerFor]="menu" class="menu-trigger"></button> -->
+
+<!-- <mat-menu #menu="matMenu" class="item-edit">
+
+    <ng-container *ngIf="isLoading; else mainMenu">
+        <div class="d-flex justify-content-center ">
+            <div class="spinner-border text-primary spinner-border-sm" role="status" style="margin: 0px 4px;">
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-template #mainMenu>
+        <!- - Caso o clique contemple apenas feições pertencentes a uma camada - ->
+        <ng-container *ngIf="layers.length == 1; else multipleLayers">
+            <!- - <span (mouseleave)="closeMyMenu()"> - ->
+            <div class="d-flex justify-content-center" style="background-color: lightgrey; border-radius: 2px;">
+                <span>{{layers[0]}}</span>
+            </div>
+            <button *ngFor="let item of getItemsFromLayerName(layers[0])" mat-menu-item class="mat-menu-item"
+                (click)="featureSelected(item)" (mouseenter)="highligthFeature(item)"
+                (mouseleave)="clearHighligthFeature(item)">
+                {{item.nameFeature | titlecase}}
+            </button>
+
+            <!- - </span> - ->
+        </ng-container>
+
+        <!- - Caso o clique contemple multiplas feições pertencentes a mais de uma camada - ->
+        <ng-template #multipleLayers>
+            <ng-container *ngFor="let layer of layers; let i = index">
+                <!- - Caso a camada em questão possua mais de uma feição clicada - ->
+                <button mat-menu-item [matMenuTriggerFor]="subMenu" *ngIf="isExpandable(layer); else menuItem">
+                    {{layer}}
+                </button>
+
+                <!- - Sub-menu da camada com as feições candidatas - ->
+                <mat-menu #subMenu="matMenu" overlapTrigger="true">
+                    <button *ngFor="let item of getItemsFromLayerName(layer)" mat-menu-item
+                        (click)="featureSelected(item)" (mouseenter)="highligthFeature(item)"
+                        (mouseleave)="clearHighligthFeature(item)">
+                        {{item.nameFeature | titlecase}}
+                    </button>
+                </mat-menu>
+
+                <!- - Caso a camada em questão possua apenas uma feição clicada - ->
+                <ng-template #menuItem>
+                    <button mat-menu-item (click)="featureSelected(getItemsFromLayerName(layer)[0])"
+                        (mouseenter)="highligthFeature(getItemsFromLayerName(layer)[0])"
+                        (mouseleave)="clearHighligthFeature(getItemsFromLayerName(layer)[0])">
+                        {{ layer }}</button>
+                </ng-template>
+            </ng-container>
+
+        </ng-template>
+    </ng-template>
+
+</mat-menu> -->

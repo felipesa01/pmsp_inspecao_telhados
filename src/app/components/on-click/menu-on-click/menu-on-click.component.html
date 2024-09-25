@@ -1,0 +1,23 @@
+<button *ngIf="isRootNode" #clickHoverMenuTrigger="matMenuTrigger" mat-button [matMenuTriggerFor]="menu"
+    class="menu-trigger"></button>
+
+<button *ngIf="!isRootNode" mat-menu-item [matMenuTriggerFor]="menu" class="menu-trigger ps-0">{{ trigger }}</button>
+
+<mat-menu #menu="matMenu" class="item-edit">
+    <ng-container *ngFor="let node of data; let i = index">
+        <button id="internalTrigger" mat-menu-item class="mat-menu-item w-100 px-0 d-block" *ngIf="isExpandable(node); else menuItem">
+            <app-menu-on-click [trigger]="nodeName(node)" [data]="node.children" [isRootNode]="false"></app-menu-on-click>
+        </button>
+        <ng-template #menuItem>
+            <button class="px-0 d-block" *ngIf="!isLayerParent(node); else menuItemUnique" mat-menu-item (click)="featureSelected(node.item)" (mouseenter)="highligthFeature(node.item)"
+                (mouseleave)="clearHighligthFeature(node.item)">
+                {{ node.item['nameFeature'] }}</button>
+            
+            <ng-template #menuItemUnique>
+                <button class="px-0 d-block"  mat-menu-item (click)="featureSelected(node.children[0].item)" (mouseenter)="highligthFeature(node.children[0].item)"
+                (mouseleave)="clearHighligthFeature(node.children[0].item)">
+                {{ node.children[0].item['layerName'] }}</button>
+            </ng-template>
+        </ng-template>
+    </ng-container>
+</mat-menu>

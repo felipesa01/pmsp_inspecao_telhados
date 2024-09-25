@@ -1,0 +1,37 @@
+.title {
+    background: #369;
+    color: #fff;
+    text-align: center;
+    box-shadow: 0 3px 4px #00000033;
+    font-size: 1.1em;    
+    line-height: normal;
+    z-index: 1;
+  }
+
+  .btn-edit {
+    padding: 0.1em;
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 4px;
+}
+
+    .btn-edit:hover {
+        background-color: #e6e6e6;
+    }
+
+
+
+.resize-handle-right {
+    position: absolute;
+    height: 100%;
+    cursor: col-resize;
+    width: 3px;
+    right: 0;
+}
+
+.resize-handle-right:hover {
+    background-color: #7bbce4;
+}
+
+mwlResizable {
+    box-sizing: border-box;
+}

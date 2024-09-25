@@ -1,0 +1,55 @@
+<div>
+    <div class="d-flex justify-content-center align-items-center p-0 w-100 modal-header" cdkDrag
+        cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle cdkDragBoundary=".main-container-of-all">
+        <span class="mx-4 modal-title">{{'Adicionar imagem de drone como ' + (asLayer ? 'camada' : 'mapa base')}}</span>
+
+        <button type="button" class="btn modal-close-button" (click)="close()">
+            <i class="material-icons modal-close-icon">
+                close
+            </i>
+        </button>   
+    </div>
+
+    <div class="container p-2">
+
+        <div class="d-flex mb-2">
+            <input class="form-control" (keyup)="applyFilter($event.target.value)" placeholder="Buscar">
+        </div>
+
+        <div class="mat-elevation-z3 box-heigth-limit">
+
+            <table mat-table [dataSource]="dataSource" matSort >
+
+                <ng-container *ngFor="let column of tableHeader" [matColumnDef]="column">
+                    <ng-container *ngIf="column != 'act'; else act">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{colNames[column]}}
+                        </th>
+                        <td mat-cell *matCellDef="let row"> {{row[column]}} </td>
+                    </ng-container>
+
+                    <ng-template #act>
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let row">
+                            <button (click)="!isAdded(row['id_catalog']) ? addDroneTile(row['id_catalog']) : removeDroneTile(row['id_catalog'])" type="button"
+                                class="btn btn-outline-light btn-edit" [matTooltip]="!isAdded(row['id_catalog']) ? 'Adicionar' : 'Remover'" matTooltipPosition="right">
+                                <i class="material-icons" style="font-size: 20px; width: 20px; color: #4d4d4d;">
+                                    {{!isAdded(row['id_catalog']) ? 'add' : 'close'}}
+                                </i>
+                            </button>
+                        </td>
+                    </ng-template>
+                </ng-container>
+
+
+
+                <tr mat-header-row *matHeaderRowDef="tableHeader; sticky: true"></tr>
+                <tr (dblclick)="!isAdded(row['id_catalog']) ? addDroneTile(row['id_catalog']) : removeDroneTile(row['id_catalog'])" [ngStyle]="{'background-color': isAdded(row['id_catalog']) ? '#e8ffe2' : ''}" mat-row *matRowDef="let row; columns: tableHeader;"></tr>
+
+            </table>
+
+            <!-- <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator> -->
+
+        </div>
+
+    </div>
+</div>

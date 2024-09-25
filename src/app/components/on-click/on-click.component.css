@@ -1,0 +1,23 @@
+.menu-trigger {
+    /* display: none; */
+    /* visibility: hidden; */
+    height: 0px;
+
+  }
+
+[mat-menu-item] {
+  min-height: 1.8em;
+  /* display: flex; */
+  /* padding-bottom: 5px; */
+  padding-left: 10px;
+}
+
+
+::ng-deep .item-edit {
+  min-width: 0px!important;
+  max-width: 300px !important;
+  padding: 0px 0.3em;
+}
+
+
+

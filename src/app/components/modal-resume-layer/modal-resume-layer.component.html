@@ -1,0 +1,30 @@
+<div>
+    <!-- TOPBAR -->
+    <div class="d-flex justify-content-center align-items-center p-0 modal-header w-100">
+        <span class="mx-4 modal-title">Descrição da camada</span>
+    </div>
+
+    <!-- Skeleton loading -->
+    <div *ngIf="isLoading; else attributeInfos" class="p-2">
+
+        <div class="d-flex mb-3">
+            <div class="skeleton skeleton-icon"></div>
+            <div class="skeleton skeleton-icon"></div>
+        </div>
+
+        <div *ngFor="let i of [].constructor(3)" class="d-flex mb-3">
+            <div class="skeleton skeleton-key"></div>
+            <div class="skeleton skeleton-value"></div>
+        </div>
+
+    </div>
+
+    <ng-template #attributeInfos>
+        <!-- CONTENT -->
+        <div>{{title}}</div>
+        <div>{{descricao}}</div>
+        <div>{{responsavel}}</div>
+
+
+    </ng-template>
+</div>

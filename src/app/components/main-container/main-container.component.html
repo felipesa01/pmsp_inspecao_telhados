@@ -1,0 +1,98 @@
+<div *ngIf="layersIsLoading"  style="background-color: rgba(82, 82, 82, 0.5); width: 100%; height: 100%; position: absolute; z-index: 99;">
+    <img src="https://brazildatacube.dpi.inpe.br/portal/assets/images/loading.gif" alt="" style="position: absolute;top: 50%;left: 50%;transform: translate(0, -50%);">
+</div>
+
+
+<mat-drawer-container style="height: 100%;" class="main-container-of-all">
+
+    <!-- sidebar place -->
+    <mat-drawer #sidenav mode="side" [opened]="openSideNav" mwlResizable [enableGhostResize]="true"
+        (resizing)="onResizing($event)" (resizeEnd)="onResizeEnd($event)"
+        [ngStyle]="{'width.px': widthStyle, 'min-width.px': minWidthStyle, 'max-width.px': maxWidthStyle}" style="max-height: 100vh;">
+
+        <!-- sidebar resize handle -->
+        <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }">
+        </div>
+
+        <!-- sidebar header-bar -->
+        <div class="header-bar" style="background-color: #bdbfc1">
+        </div>
+
+        <!-- sidebar component -->
+        <app-sidebar #appSidebar style="max-height: 100%;"></app-sidebar>
+
+    </mat-drawer>
+
+
+    <mat-drawer-content [ngStyle]="{'margin-left.px': widthStyle}">
+
+        <!-- content header-bar -->
+        <div class="header-bar" style="position: inherit; z-index: 3;display: flex;
+            align-items: center;">
+
+            <div class="header-content-left">
+                <!-- <button type='button' class="btn btn-sml" (click)="sidenav.toggle()">
+                    <mat-icon *ngIf="!sidenav.opened" fontIcon="arrow_forward_ios" class="icon-button" [inline]="true">
+                    </mat-icon>
+                    <mat-icon *ngIf="sidenav.opened" fontIcon="arrow_back_ios_new" class="icon-button" [inline]="true">
+                    </mat-icon>
+                </button> -->
+
+                <img src="./assets/images/brasao-pmsp.png" alt="" class="img-header">
+                <img src="./assets/images/nome-pmsp.png" alt="" class="img-header">
+
+
+            </div>
+        </div>
+
+
+        <!-- map place -->
+        <div id="content" class="content">
+            <app-map></app-map>
+            <!-- <router-outlet></router-outlet> -->
+        </div>
+
+
+        <!-- Footbar place -->
+        <div class="footbar d-flex">
+
+            <div class="col d-flex align-items-center justify-content-center" style="border: solid 1px; width: 200px;">
+                <div style="text-align: center; align-items: center;"
+                    [innerText]="isCoordsWGSDecimal ? toStringHDMSFunction(geoService.mousePositionWGS84) : formatCoordsWGS(geoService.mousePositionWGS84)">
+                </div>
+                <button class="mx-2 p-0"
+                    style="border: solid 0px; height: 18px; width: 18px; display: inline-flex; align-items: center; background: transparent;"
+                    (click)="isCoordsWGSDecimal = !isCoordsWGSDecimal">
+                    <mat-icon style="display: inline-flex; font-size: 14pt; height: 100%;color: #515151;"
+                        class="material-icons-outlined">cached</mat-icon>
+                </button>
+            </div>
+
+            <div style="border: solid 1px; width: 200px; text-align: center;" class="col mx-2"
+                [innerText]="formatCoordsUTM(geoService.mousePositionUTM)">
+            </div>
+
+            <div style="border: solid 1px; width: 200px; text-align: center;display: flex; align-items: center; justify-content: center;"
+                class="col mx-2">Escala aprox. 1:
+                <input class="input-scale" type="text" [(ngModel)]="scaleNumber" (keydown.enter)="setScale($event)">
+            </div>
+
+            <div style="border: solid 1px; width: 30px; text-align: center;display: flex;
+            align-items: center;
+            justify-content: center;" class="mx-2">
+                <div *ngIf="geoService.mapRedering; else done" class="spinner-border text-primary"
+                    style="height: 16px; width: 16px;" matTooltip="Carregando camadas..." matTooltipPosition="left">
+                </div>
+                <ng-template #done>
+                    <mat-icon
+                        style="display: inline-flex; font-size: 14pt; height: 100%;color: rgb(47, 185, 47); font-weight: bold;"
+                        class="material-icons-outlined" matTooltip="Camadas carregadas!"
+                        matTooltipPosition="left">done</mat-icon></ng-template>
+            </div>
+
+        </div>
+
+    </mat-drawer-content>
+
+
+</mat-drawer-container>

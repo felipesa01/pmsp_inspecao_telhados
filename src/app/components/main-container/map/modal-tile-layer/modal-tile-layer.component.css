@@ -1,0 +1,90 @@
+:host {
+    --main-button-tam: 90px;
+  }
+
+.label-btn-baselayers {
+    font-size: 10pt;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: calc(100% - 8px);
+    justify-content: center;
+    padding: 0px;
+    left: 4px;
+    bottom: 4px;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: inherit;border-bottom-right-radius: inherit;
+}
+
+.btnn {
+    border: 3px solid rgb(165, 165, 165);
+    background-color: rgb(165, 165, 165);
+    padding: 0px;
+}
+
+
+.btnn-selected {
+    border: 3px solid #3285ff;
+}
+
+.main-div {
+    bottom: 0px; 
+    z-index: 5;
+}
+
+    .main-div-r {
+        right: 0px; 
+    }
+
+    .main-div-l {
+        left: 0px; 
+    }
+
+.main-btn {
+    border: solid 1px #bfbfbf; 
+    width: var(--main-button-tam); 
+    height: var(--main-button-tam); 
+}
+
+#catalog-of-categories {
+    bottom: 0px; 
+    z-index: 3; 
+    height: var(--main-button-tam); 
+    background-color: #f4f4f4;
+    border: solid 1px #cecece; 
+}
+
+    #catalog-of-categories > div {
+        margin-right: 3px;
+    }
+
+    #catalog-of-categories > div:last-of-type {
+        margin-right: 0;
+    }
+
+.visibleTileLayers-r {
+        right: 0;
+        transform: translate(calc(-1 * (var(--main-button-tam) - 10px)), 0px);
+        padding: 0px 20px 0px 5px; 
+    }
+
+.visibleTileLayers-l {
+        left: 0;
+        transform: translate(calc(var(--main-button-tam) - 10px), 0px);
+        padding: 0px 5px 0px 20px; 
+    }
+
+.label-ortofoto {
+
+    position: absolute; 
+    color: aliceblue; 
+    font-style: normal;
+    font-weight: 500;   
+    width: 100%;
+    padding: 10%;
+    --color-label-ortofoto-shadow: #515151;
+    --len1-label-ortofoto-shadow: 1px;
+    --len2-label-ortofoto-shadow: 1px;
+    text-shadow: var(--len1-label-ortofoto-shadow) 0 var(--color-label-ortofoto-shadow), calc(-1 * var(--len1-label-ortofoto-shadow)) 0 var(--color-label-ortofoto-shadow), 0 var(--len1-label-ortofoto-shadow) var(--color-label-ortofoto-shadow), 0 calc(-1 * var(--len1-label-ortofoto-shadow)) var(--color-label-ortofoto-shadow), var(--len2-label-ortofoto-shadow) var(--len2-label-ortofoto-shadow) var(--color-label-ortofoto-shadow), calc(-1 * var(--len2-label-ortofoto-shadow)) -1px var(--color-label-ortofoto-shadow), var(--len2-label-ortofoto-shadow) calc(-1 * var(--len2-label-ortofoto-shadow)) var(--color-label-ortofoto-shadow), calc(-1 * var(--len2-label-ortofoto-shadow)) var(--len2-label-ortofoto-shadow) var(--color-label-ortofoto-shadow);
+
+}

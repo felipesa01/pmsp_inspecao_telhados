@@ -1,0 +1,30 @@
+.container {
+    width: 80vw;
+}
+
+.fullscreen {
+    width: 100vw!important;
+    height: 100vh!important;
+}
+
+.limit-result {
+    max-height: 85vh!important;
+}
+
+.title {
+    /* margin: -24px -24px 0px -24px !important;
+    padding: 10px 24px; */
+    background: #369;
+    color: #fff;
+    cursor: move;
+    text-align: center;
+    box-shadow: 0 3px 4px #00000033;
+    font-size: 1.1em;    
+    line-height: normal;
+    z-index: 1;
+  }
+
+.mat-mdc-row:hover .mat-mdc-cell {
+    background-color:rgb(207, 207, 207);
+    cursor: pointer;
+}

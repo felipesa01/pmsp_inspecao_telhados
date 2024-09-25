@@ -1,0 +1,18 @@
+<!-- PARA OS ATRIBUTOS DO TIPO "CHECKBOX" -->
+<input [id]="attribute" *ngIf="type == 'checkbox'"  type="checkbox" (change)="onChange($event)" [(ngModel)]="value.main"/>
+
+<!-- PARA OS DEMAIS TIPOS -->
+<div *ngIf="type != 'checkbox'" class="d-flex w-100 align-items-center" style="position: relative;">
+    <input [id]="attribute" style="max-height: 2em;font-size: 0.85em;padding: 0.5em;" [type]="type" class="form-control" [ngbTypeahead]="search" popupClass="typeahead-window" (keyup)="onChange()" (change)="onChange()" (keydown.arrowDown)="scroll($event)" (keydown.arrowUp)="scroll($event)" [(ngModel)]="value.main"/>
+    <!-- <small *ngIf="!searching && type != 'checkbox'" class="form-text text-muted" style="position: absolute; right: 10pt;">searching...</small> -->
+    <div *ngIf="searching && type != 'checkbox'" class="spinner-border text-secondary" style="position: absolute;right: 5pt;width: 1em;height: 1em;" role="status"></div>
+</div>
+
+
+
+<!-- CASO O TIPO SEJA "DATE" E O MODO "INTERVALO" TENHA SIDO SELECIONADO (seleção abaixo) -->
+<input *ngIf="type == 'date' && dateIsRange" [id]="attribute" style="height: 1.8em;" [type]="type" class="form-control" [ngbTypeahead]="search" popupClass="typeahead-window" (keyup)="onChange()" (change)="onChange()" (keydown.arrowDown)="scroll($event)" (keydown.arrowUp)="scroll($event)" [(ngModel)]="value.second"/>
+
+
+<!-- SELEÇÃO DO MODO INTERVALO PARA OS ATRIBUTOS DO TIPO "DATE" -->
+<!-- <input [id]="attribute" *ngIf="type == 'date'"  type="checkbox" [(ngModel)]="dateIsRange"/> -->

@@ -1,0 +1,78 @@
+<!-- Skeleton loading -->
+<ng-container *ngIf="isLoading; else loaded">
+
+    <div *ngFor="let i of [].constructor(5)" class="d-flex mb-3">
+        <div class="skeleton skeleton-layer-visibilty-icon"></div>
+        <div class="skeleton skeleton-layer-name"></div>
+        <div class="skeleton skeleton-layer-options-icon"></div>
+    </div>
+</ng-container>
+
+
+<ng-template #loaded>
+    <div *ngIf="geoService.mainLayers.length > 0; else emptyMainLayers">
+        <div cdkOverlayOrigin class="d-flex justify-content-center">
+            <span style="font-weight: 500;">Camadas carregadas</span>
+        </div>
+        <hr>
+    </div>
+
+    <ng-template #emptyMainLayers>
+        <div cdkOverlayOrigin class="p-2 text-center">
+            <span *ngIf="!isOpen; else tipIfOpened">
+                Sem camadas carregadas, use o botão abaixo para carregá-las.
+            </span>
+            <ng-template #tipIfOpened>
+                <span>
+                    Escolha as camadas na janela ao lado para carregá-las no mapa.
+                </span>
+            </ng-template>
+        </div>
+    </ng-template>
+</ng-template>
+
+<div>
+    <div cdkDropList id='mainLayerList' [cdkDropListData]="geoService.mainLayers" (cdkDropListDropped)="drop($event)"
+        style="min-height: 15px; overflow: auto; max-height: 80vh;">
+        <div class="list-item" cdkDrag cdkDragLockAxis="y" *ngFor="let item of geoService.mainLayers">
+            <div class="d-flex align-items-center">
+                <mat-icon cdkDragHandle style="cursor: move; color: #cacaca;">
+                    drag_indicator
+                </mat-icon>
+
+                <!-- Camada -->
+                <app-layer-item class="col" [item]="item" [secondaryIsOpenedTrigger]="isOpen">
+                </app-layer-item>
+            </div>
+
+            <div class="legend" style="display: none;">
+                <div class="mx-4 pb-2">
+                    <div class="position-relative"
+                        style="border-radius: 0.3em; border: solid 1px #cececeaa; box-shadow: 2px 2px 4px 0px #0000001c;">
+                        <button class="btn btn-sm position-absolute p-0 d-flex" style="right: 0px;" (click)="closeLegend(item)">
+                            <i class="material-icons-outlined " style="font-size: 1em; color: darkgrey;">close</i></button>
+                        <img class="py-1 ps-1" src="" alt="" style="padding: 0.1em;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="d-flex align-items-center justify-content-center">
+    <div class="demo-trigger-connected-overlay d-flex justify-content-center p-2">
+        <button class="btn btn-outline-primary" style="padding: 2px 6px;" type="button" (click)="openDroneTileList()"
+            matTooltip="Adicionar imagem de drone como camada">
+            <i class="fg-drone" style="font-size: 1.2em;"></i>
+        </button>
+    </div>
+
+    <div class="demo-trigger-connected-overlay d-flex justify-content-center p-2">
+        <button class="btn btn-outline-primary" style="padding: 2px 6px;" type="button"
+            [ngClass]="{'btn-active':isOpen}" (click)="toggleSecList()"
+            [matTooltip]="!isOpen ? 'Carregar camadas' : 'Fechar'">
+            <i class="fg-layer-add-o" style="font-size: 1.2em;"></i>
+        </button>
+    </div>
+</div>

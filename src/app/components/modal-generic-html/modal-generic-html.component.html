@@ -1,0 +1,14 @@
+<div style="width: min-content;">
+    <div class="d-flex justify-content-center align-items-center p-0 modal-header w-100" cdkDrag
+        cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+        <span class="mx-4 modal-title">{{data_.title}}</span>
+
+        <button type="button" class="btn" style="padding: 1px; position: absolute;right: 10px;" (click)="closeInfo()">
+            <i class="material-icons" style="font-size: 20px;width: 20px; color: rgb(255, 255, 255);">
+                close
+            </i>
+        </button>
+    </div>
+
+    <div class="d-flex" [innerHtml]="data_.html"></div>
+</div>

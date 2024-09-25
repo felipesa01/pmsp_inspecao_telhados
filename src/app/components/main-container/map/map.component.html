@@ -1,0 +1,55 @@
+<div id="map" class="map">
+
+  <!-- Main raster tile selector -->
+  <!-- <app-modal-tile-layer class="overlay-map modal-tile-layer modal-tile-layer-r" [r_side]="true"></app-modal-tile-layer> -->
+
+  <!-- Secondary raster tile selector -->
+  <!-- <app-modal-tile-layer *ngIf="ctrlSwipeShowed" class="overlay-map modal-tile-layer modal-tile-layer-l"
+    [r_side]="false"></app-modal-tile-layer> -->
+
+
+  <!-- Fullscreen button -->
+  <button class="overlay-map" style="top: 15px; right: 15px;" color="primary" mat-mini-fab (click)="toggleFull()">
+    <mat-icon>fullscreen</mat-icon>
+  </button>
+
+  <!-- Refresh button -->
+  <!-- <button class="overlay-map" style="top: 15px; left: 15px;" color="primary" mat-mini-fab (click)="refreshMap()">
+    <mat-icon>refresh</mat-icon>
+  </button> -->
+
+    <!-- 3D button -->
+    <button class="overlay-map" style="top: 65px; left: 15px;" color="primary" mat-mini-fab (click)="add3dModel()">
+      <!-- <mat-icon>deployed_code_update</mat-icon> -->
+      <span class="material-symbols-outlined"> deployed_code_update </span>
+    </button>
+
+  <!-- <button class="overlay-map" style="top: 65px; left: 15px;" color="primary" mat-mini-fab (click)="apply()">
+    <mat-icon>login</mat-icon>
+  </button> -->
+
+
+  <!-- <div class="overlay-map" style="top: 50%; left: 50%; transform: translate(-50%, 0)">
+    <form action="" (ngSubmit)="apply()">
+      <input type="text" [(ngModel)]="model.username" [ngModelOptions]="{standalone: true}" placeholder="Usuário">
+      <input type="password" [(ngModel)]="model.password" [ngModelOptions]="{standalone: true}" placeholder="Usuário">
+      <button type="submit">Ir</button>
+    </form>
+  </div> -->
+
+
+  <!-- Main toolbox map -->
+  <!-- <app-toolbox class="overlay-map"
+    [ngClass]="!geoService.streetViewIsOpen$.value ? 'toolbox-location' : 'toolbox-location-street-view'"></app-toolbox> -->
+  <!-- <app-toolbox class="overlay-map toolbox-location"></app-toolbox> -->
+
+
+  <!-- Search Toolbar -->
+  <!-- <app-search-toolbar class="overlay-map"
+    style="top: 15px; left: 50%; transform: translate(-50%, 0); max-height: 80%; width: 60%; display: flex; flex-flow: column;"></app-search-toolbar> -->
+
+
+  <!-- <app-timeline-toolbar class="overlay-map timeline-modal" *ngIf="timelineShowed.on"
+    [layerId]="timelineShowed.layerId"></app-timeline-toolbar> -->
+
+</div>

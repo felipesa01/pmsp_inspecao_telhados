@@ -1,0 +1,122 @@
+<div>
+  <!-- TOPBAR -->
+  <div class="d-flex justify-content-center align-items-center p-0 modal-header w-100" cdkDrag
+    cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle cdkDragBoundary=".app-boundary">
+    <span class="mx-4 modal-title">{{this.dataObj.typeOfDialog ==
+      'search' ? 'Busca na camada ' : ''}}{{dataObj.data.layerName}}</span>
+
+    <button type="button" class="btn modal-close-button" (click)="close()">
+      <i class="material-icons modal-close-icon">
+        close
+      </i>
+    </button>
+  </div>
+
+  <!-- Skeleton loading -->
+  <div *ngIf="isLoading; else attributeInfos" class="p-2">
+
+    <div class="d-flex mb-3">
+      <div class="skeleton skeleton-icon"></div>
+      <div class="skeleton skeleton-icon"></div>
+    </div>
+
+    <div *ngFor="let i of [].constructor(3)" class="d-flex mb-3">
+      <div class="skeleton skeleton-key"></div>
+      <div class="skeleton skeleton-value"></div>
+    </div>
+
+  </div>
+
+  <ng-template #attributeInfos>
+    <!-- BUTTONS SPACE -->
+    <div *ngIf="dataObj.typeOfDialog == 'info'" class="d-flex align-items-center justify-content-start p-2">
+
+      <button class="btn btn-outline-light btn-edit d-flex mx-1" (click)="setExtend()"
+        matTooltip="Aproximar para feição" matTooltipPosition="below">
+        <i class="material-icons-outlined" style="font-size: 20px;width: 20px; color: rgb(61, 61, 61);">
+          fullscreen
+        </i></button>
+
+      <button [disabled]="!geomIsPoint" class="btn btn-outline-light btn-edit d-flex mx-1" (click)="addToStreetView()"
+        matTooltip="Visualizar no StreetView" matTooltipPosition="below">
+        <i class="material-icons-outlined" style="font-size: 20px;width: 20px; color: rgb(61, 61, 61);">
+          location_on
+        </i></button>
+    </div>
+
+    <!-- CONTENT CONTAINER -->
+    <div class="box-resizeble box-heigth-limit box-width-limit p-2">
+      <!-- ATTRIBUTES CONTAINER -->
+      <div id="attributes-container" *ngIf="formatedKeys && showAttributes" style="line-height: 1.5em;">
+
+        <!-- [INFO MODE] -->
+        <!-- ----------- -->
+        <ng-container *ngIf="dataObj.typeOfDialog == 'info'">
+          <div *ngFor="let key of keys">
+            <span class="me-1" style="font-weight: 500;">{{formatedKeys[key]}}:</span>
+            <span>{{mainData[key]}}</span>
+          </div>
+        </ng-container>
+
+        <!-- [SEARCH OR FILTER MODE] -->
+        <!-- ----------------------- -->
+        <ng-container *ngIf="dataObj.typeOfDialog == 'search' || dataObj.typeOfDialog == 'filter'">
+
+          <form [formGroup]="profileForm" *ngIf="profileForm" class="w-100" (ngSubmit)="onSubmit()">
+            <div *ngFor="let item of profileForm.controls| keyvalue: unsorted; let n=index"
+              class="d-flex align-items-center my-1">
+              <!-- ROTULO DO CAMPO -->
+              <span style="text-wrap: nowrap;" class="mx-1">{{this.formatedKeys[item.key]}}</span>
+
+              <!-- COMPONENTE "AUX TYPE AHEAD" -->
+              <app-aux-type-ahead [id]="item.key" class="mx-1 w-100 d-flex" [attribute]="item.key"
+                [layerSource]="layerSource" [type]="getType(item.key, 'translated')" [isRange]="isRange(item.key)"
+                [value]="getControlValue(item.key, 'value')"
+                (sendValue)="setValue(item.key, $event)"></app-aux-type-ahead>
+
+              <!-- SELETOR DO PREDICADO DE BUSCA -->
+              <select [formControl]="getControl(item.key, 'mode')" [id]="'select-'+item.key"
+                class="form-select form-select-sm mx-1" aria-label=".form-select-sm example"
+                style="max-height: 2em; max-width: max-content;">
+                <option value="0" selected>Excluir campo</option>
+                <option *ngFor="let option of typeMapper[getType(item.key, 'raw')].options" [value]="option.value">
+                  {{option.text}}</option>
+              </select>
+            </div>
+
+            <div class="p-2 d-flex justify-content-end">
+              <button *ngIf="dataObj.typeOfDialog == 'filter'" type="button" (click)="clearFilter()"
+                class="btn btn-warning btn-sm mx-1">Limpar filtros</button>
+
+              <div aria-live="polite" toastContainer style="line-height: normal;"></div>
+
+              <button [disabled]="!isSearchable()" type="submit" class="btn btn-success btn-sm mx-1">
+
+                <ng-container *ngIf="searchIsLoading; else bucarTitle">
+                  <div class="d-flex justify-content-center ">
+                    <div class="spinner-border text-light spinner-border-sm" role="status">
+                    </div>
+                  </div>
+                </ng-container>
+
+                <ng-template #bucarTitle>
+                  <span>{{dataObj.typeOfDialog == 'search' ? 'Buscar' : 'Filtrar'}}</span>
+                </ng-template>
+
+              </button>
+            </div>
+          </form>
+        </ng-container>
+
+      </div>
+
+
+
+      <!-- CUSTOM INTERNAL CONTENT -->
+      <div class="p-2">
+        <ng-content></ng-content>
+      </div>
+
+    </div>
+  </ng-template>
+</div>

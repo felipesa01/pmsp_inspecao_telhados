@@ -1,0 +1,62 @@
+<div class="w-100 d-flex align-items-center"
+    style="background-color: rgb(243, 243, 243); height: 90px; border: solid 1px grey; border-radius: 1em;">
+    <div class="col-3 p-1">
+
+        <div class="d-flex">
+            <select class="form-select form-select-sm mx-1" style="max-height: 2em;" (change)="onChange()"
+                [(ngModel)]="selectedAttr">
+                <option value="">Selecione o atributo</option>
+                <option *ngFor="let option of dateAttribures | keyvalue" [value]="option.key">
+                    {{option.value}}</option>
+            </select>
+        </div>
+
+        <div class="d-flex">
+            <select class="form-select form-select-sm mx-1" style="max-height: 2em;" (change)="onChange()"
+                [(ngModel)]="selectedPeriodo">
+                <option value="">Selecione a período</option>
+                <option *ngFor="let option of dateType" [value]="option.value">
+                    {{option.name}}</option>
+            </select>
+        </div>
+
+        <div class='d-flex align-items-center px-1'>
+            <input type="checkbox" [(ngModel)]="cumulative" (change)="changeSourceLayer()">
+            <span class="ms-1" style="font-size: 0.9em;">Cumulativo</span>
+        </div>
+
+        <!-- <button (click)="addData()">Add</button> -->
+
+    </div>
+    <div *ngIf="on" class="col-9 p-1 h-100">
+        <div class="h-100">
+            <div id="top" class="d-flex justify-content-center align-items-center" style="height: 35%">
+                <div class="col-6 d-flex justify-content-between align-items-center">
+                    <button [disabled]="disableButton(-1)" (click)="setScartterPoint(-1)"
+                        class="btn btn-sm d-flex btn-outline-secondary p-1">
+                        <i class="material-icons-outlined " style="font-size: 1em; color: darkgrey;">arrow_back</i>
+                    </button>
+                    <span>{{getString(selectedPoint)}}</span>
+                    <button [disabled]="disableButton(1)" (click)="setScartterPoint(1)"
+                        class="btn btn-sm d-flex btn-outline-secondary p-1">
+                        <i class="material-icons-outlined " style="font-size: 1em; color: darkgrey;">arrow_forward</i>
+                    </button>
+                </div>
+                <div class="col-6 ps-2 d-flex flex-column justify-content-center" style="font-size: 0.9em;">
+                    <!-- <span>{{source.items.length}}</span> -->
+                    <span class="lh-1">Feições exibidas: {{totalFeatures}}</span>
+                    <span class="lh-1">Feições não exibidas: {{source.empytitems}}</span>
+                    
+                    <!-- <div *ngIf="geoservice.mapRedering;" class="spinner-border text-primary" style="height: 16px; width: 16px;"></div> -->
+                </div>
+
+            </div>
+            <div style="height: 60%">
+                <canvas baseChart [datasets]="datasets" [labels]="labels" [options]="scatterChartOptions"
+                    [type]="scatterChartType" (chartClick)="chartClicked($event)">
+                </canvas>
+            </div>
+        </div>
+    </div>
+
+</div>

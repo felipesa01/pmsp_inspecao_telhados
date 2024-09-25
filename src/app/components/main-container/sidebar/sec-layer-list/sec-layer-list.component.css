@@ -1,0 +1,36 @@
+.mat-tree-node-edit {
+    min-height: 2em;
+  }
+
+.btn-edit {
+    padding: 0px 0px;
+    border: 0px solid rgb(219, 219, 219);
+    border-radius: 20px;
+}
+
+.btn-topbar-edit {
+    padding: 2px;
+    /* border-radius: 1px; */
+    margin: 0px 0.5em;
+  }
+
+  .btn-topbar-edit > span {
+    font-size: 1.4em;
+  }
+
+.layer-node:hover {
+    background-color: rgb(238, 238, 238);
+  }
+
+span.no_selection {
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
+    -ms-user-select: none; /* IE10+ */
+}
+
+.list-content {
+    overflow: auto;
+    max-height: 70vh;
+  }

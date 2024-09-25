@@ -1,0 +1,268 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~bootstrap-icons/font/bootstrap-icons.css";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Symbols+Outlined");
+
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 11pt;
+}
+
+.material-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#ol-street-view--pegman-button-div {
+    top: calc(100% - 130px);
+    right: 35px;
+    transform: translateY(-100%);
+}
+
+
+/* @media (max-width: 1280px) {
+    .ol-street-view--activated .ol-street-view--map {
+        height: 330px;
+        min-height: 330px;
+    }
+  } */
+
+.gm-control-exit {
+    color: #000;
+    background: none #e99001;
+    font-size: 1.2rem;
+    width: 68px;
+    height: 35px;
+}
+
+.ol-street-view--activated .ol-street-view--map {
+    height: 50vh;
+    min-height: 30vh;
+}
+
+#ol-street-view--panorama > div.gm-style > [aria-label="Map"] {
+  filter: invert(1);
+}
+
+/* #ol-street-view--panorama {
+    filter: invert(1);
+}
+
+.ol-street-view--activated #ol-street-view--panorama {
+    filter: invert(1);
+} */
+
+
+.box-resizeble { 
+    resize: both;
+    overflow: auto;
+    background: #fff;
+    height: fit-content;
+      /* height: 50vh; */
+    /* max-height: 80vh;
+    width: 350px;
+    min-width: 350px; */
+
+    /* position: relative; */
+  }
+
+  .box-heigth-limit {
+    max-height: 65vh;
+    overflow: auto;
+  }
+
+  .box-width-limit {
+    width: 350px; 
+    min-width: 350px;
+    /* max-width: -webkit-fill-available;
+    max-width: -moz-available;
+    max-width: stretch;
+    min-width: -webkit-fill-available;
+    min-width: -moz-available;
+    min-width: stretch; */
+  }
+
+  /* .custom-mat-dialog-panel {
+    min-width: 350px !important;
+    max-width: min-content!important;
+  } */
+
+  .custom-mat-dialog-panel-resizeble {
+    resize: both;
+    overflow: auto;
+  }
+
+
+  .custom-mat-dialog-subitem-toolbox-main {
+    transform: translate(-100%, -50%);
+    position: absolute !important;
+    padding: 0px 1em;
+  } 
+
+  .custom-mat-dialog-subitem-toolbox-sec {
+    transform: translate(-50%, 0);
+    padding: 1em 0px;
+    position: relative;
+  } 
+
+  .custom-mat-dialog-panel-resume {
+    max-width: 700px !important;
+    width: 60%;
+    height: 60%;
+  }
+
+  .custom-mat-dialog-panel-go-to-coords {
+    width: 550px;
+  }
+
+  .custom-mat-dialog-panel-search-in-layer {
+    width: fit-content;
+  }
+
+  .custom-mat-dialog-panel-sec-layer-list {
+    /* max-width: 25vw !important; */
+    width: 300px !important;
+    min-height: 100px;
+    /* position: static; */
+    /* transform: translateX(10px); */
+    box-shadow: none;
+  }
+
+  .custom-mat-dialog-panel-sec-layer-list > mat-dialog-container > div > div {
+    box-shadow: none !important;
+    border: 1px solid #b6b6b6;
+
+  }
+
+  .inline.toast-container {
+    width: 100% !important;
+  }
+
+  .inline.toast-container > .ngx-toastr {
+    width: 100% !important;
+  }
+
+
+  .typeahead-window {
+    position: fixed!important;
+    max-height: 400px;
+    overflow: auto;
+    line-height: 1em;
+    font-size: 0.9em;
+    padding: 0.2em 0 .2em 0px;
+  }
+
+
+  /* ############################### */ 
+  /* Configurações gerais dos modais */
+  /* ############################### */
+
+  .modal-header {
+    background: #369;
+    color: #fff;
+    cursor: move;
+    text-align: center;
+    box-shadow: 0 3px 4px #00000033;
+    font-size: 1.1em;    
+    line-height: normal;
+    z-index: 1;
+  }
+
+  .modal-title {
+    margin-right: 2.5em !important; 
+    padding: 0.5em 0px;
+  }
+
+  .modal-close-button {
+    padding: 1px; 
+    position: absolute; 
+    right: 10px;
+  }
+
+  .modal-close-icon {
+    font-size: 1em;
+    color: rgb(255, 255, 255);
+  }
+
+  /* ############################### */ 
+  /* skeleton loading */
+  /* ############################### */
+
+.skeleton {
+  animation: skeleton-loading 1s linear infinite alternate;
+  }
+  
+@keyframes skeleton-loading {
+0% {
+    background-color: hsl(200, 20%, 80%);
+}
+100% {
+    background-color: hsl(200, 20%, 95%);
+}
+}
+
+.skeleton-layer-visibilty-icon {
+  width: 20%;
+  height: 1.2rem;
+  margin: 0px 10px 0px 5px;
+  /* border-radius: 0.25rem; */
+}
+
+.skeleton-layer-name {
+  width: 70%;
+  height: 1.2rem;
+}
+
+.skeleton-layer-options-icon {
+  width: 5%;
+  height: 1.2rem;
+  margin: 0px 4px;
+}
+
+.skeleton-key {
+  width: 25%;
+  height: 1rem;
+  margin: 0px 4px;
+}
+
+.skeleton-value {
+    width: 70%;
+    height: 1rem;
+}
+
+.skeleton-icon {
+    width: 25px;
+    height: 25px;
+    margin: 0px 4px;
+    border-radius: 0.25rem;
+}
+
+.skeleton-title {
+  width: 100%;
+  height: 1.2rem;
+  /* margin: 0px 10px 0px 5px; */
+  /* border-radius: 0.25rem; */
+}
+
+.skeleton-zona {
+  width: 100%;
+  height: 1rem;
+
+  /* border-radius: 0.25rem; */
+}
+
+.skeleton-map {
+  width: 100%;
+  height: 300px;
+  /* margin: 0px 4px; */
+  /* border-radius: 0.25rem; */
+}

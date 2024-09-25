@@ -1,0 +1,80 @@
+<div class="position-absolute main-div" [ngClass]="{'main-div-r' : r_side, 'main-div-l': !r_side}">
+
+    <button [matBadge]="'+' + geoService.droneTileAdded.length" [matBadgePosition]="r_side ? 'before' : 'after'" [matBadgeHidden]="geoService.droneTileAdded.length === 0"
+        class="btn btn-light rounded-3 position-relative p-0 main-btn" matTooltip="Trocar mapa base"
+        (click)="toggleModalTileLayer()">
+
+        <div class="position-absolute label-btn-baselayers">
+            <i style="font-size: 10pt;" class="material-icons">
+                layers
+            </i><span>Mapas</span>
+        </div>
+
+        <i *ngIf="geoService[sideTileLayer].get('categoria')=='Ortofotos'" style="font-size: 15pt;"
+            class="label-ortofoto">{{geoService[sideTileLayer].get('name')}}</i>
+
+        <img style="padding: 5px; border-radius: 0.8em;" class="w-100 h-100"
+            [src]="geoService[sideTileLayer].get('imgThumb')">
+
+    </button>
+</div>
+
+<div *ngIf="visibleTileLayers" id="catalog-of-categories"
+    class="position-relative d-flex align-items-center rounded-3 visibleTileLayers"
+    [ngClass]="{'visibleTileLayers-r' : r_side, 'visibleTileLayers-l': !r_side}">
+
+    <div *ngIf="isLoading" class="spinner-border text-primary" role="status">
+    </div>
+
+    <div *ngFor="let source of TileLayersUniqueCat" class="d-flex position-relative">
+        <button (click)="selecTile(source)"
+            [ngClass]="{'btnn-selected': source.get('categoria') === geoService[sideTileLayer].get('categoria')}"
+            class="btnn rounded-3" [matTooltip]="source.get('categoria')" style="width: 75px; height: 75px;">
+            <img class="rounded-3 w-100 h-100" [src]="source.get('imgThumb')">
+        </button>
+
+        <div *ngIf="source.get('categoria') === categoryToExpand" style="position: absolute;
+            z-index: 1;
+            transform: translate(50%,-100%);
+            right: 50%" class="align-items-center d-flex flex-column">
+
+            <button *ngFor="let subsource of SubTileLayers" (click)="selecTileSub(subsource)"
+                [ngClass]="{'btnn-selected': subsource.get('name') === geoService[sideTileLayer].get('name')}"
+                style="margin-bottom: 0.2em; width: 100%; padding: 1px; border-width: 2px; width: 60px; height: 60px"
+                class="btnn rounded-3 position-relative"
+                [matTooltip]="subsource.get('categoria')!='Ortofotos' ? subsource.get('name') : null"
+                matTooltipPosition="left">
+                <i *ngIf="subsource.get('categoria')=='Ortofotos'" class="label-ortofoto"
+                    style="font-size: 12pt;">{{subsource.get('name')}}</i>
+                <img class="rounded-3" [src]="subsource.get('imgThumb')" style="height: 100%; width: 100%;">
+            </button>
+
+        </div>
+    </div>
+
+    <div *ngIf="!isLoading" class="d-flex position-relative" [matBadge]="'+' + geoService.droneTileAdded.length" [matBadgePosition]="r_side ? 'before' : 'after'" [matBadgeHidden]="geoService.droneTileAdded.length === 0">
+        <button (click)="selecDroneTile()" class="btnn rounded-3" style="width: 75px; height: 75px; background-color: white;">
+            <img class="rounded-3 w-100 h-100" matTooltip="Imagens de drone" src="./assets/images/tileThumbs/drone-100.png">
+        </button>
+
+        <div *ngIf="categoryToExpand === 'img_drone'" style="position: absolute; z-index: 1;transform: translate(50%,-100%); right: 50%" class="align-items-center d-flex flex-column">
+
+            <button (click)="openDroneTileList()" 
+                style="margin-bottom: 0.2em; padding: 1px; border-width: 2px; width: 2em; height: 2em; background-color: white;"
+                class="btnn rounded-3 position-relative" matTooltip="Adicionar imagem de drone como Mapa base"
+                matTooltipPosition="left">
+                +
+            </button>
+
+            <div *ngFor="let sublayer of geoService.droneTiles" class="position-relative rounded-3">
+                <button (click)="removeDroneTileSub(sublayer)" class="btn btn-sm btn-close" style="position: absolute; z-index: 1; right: 3px; top: 3px; font-size: 0.7em;"></button>
+                <button (click)="selecTileSub(sublayer)"
+                    style="margin-bottom: 0.2em;; width: 100%; padding: 1px; border-width: 2px; width: 60px; height: 60px; background-color: white;"
+                    class="btnn rounded-3 position-relative" [matTooltip]="sublayer.get('name')" matTooltipPosition="left">
+
+                    <img class="rounded-3" [src]="sublayer.get('imgThumb')"
+                        style="height: 100%; width: 100%;">
+                </button>
+            </div>
+        </div>
+    </div>

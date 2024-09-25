@@ -1,0 +1,33 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "esnext",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "dom"
+    ],
+
+    // https://www.typescriptlang.org/docs/handbook/modules/guides/choosing-compiler-options.html
+    "customConditions": ["module"],
+    // Recommended
+    "noEmit": true, // or `emitDeclarationOnly`
+    "allowImportingTsExtensions": true,
+    "allowArbitraryExtensions": true,
+    
+    "isolatedModules": true, // or `isolatedModules`
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false
+  },
+}

@@ -1,0 +1,262 @@
+<div>
+    <!-- TOPBAR -->
+    <div class="d-flex justify-content-center align-items-center p-0 modal-header w-100" cdkDrag
+        cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle cdkDragBoundary=".main-container-of-all">
+        <span class="mx-4 modal-title">Inserir coordenadas</span>
+
+        <button type="button" class="btn modal-close-button" (click)="close()">
+            <i class="material-icons modal-close-icon">
+                close
+            </i>
+        </button>
+    </div>
+
+    <ng-container *ngIf="pointsAdded.length > 0">
+        <div class="p-2">
+            <table class="table table-responsive-xl table-sm table-hover m-0" style="font-size: 0.95em;">
+                <thead>
+                    <tr class="lh-1">
+                        <th *ngFor="let colName of tableHeader" scope="col" style="min-width: 100px;">
+                            {{labelPointsAdded[colName]}}
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of pointsAdded" (click)="onTableClick(row['id'])" style="cursor: pointer;">
+                        <td scope="row" *ngFor="let colName of tableHeader">
+                            {{row[colName]}}</td>
+                        <td scope="row">
+                            <button class="btn btn-sm btn-close" style="font-size: 0.85em;"
+                                (click)="removePoint(row['id'])" matTooltip="Remover"></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </ng-container>
+
+    <div class="p-2" style="max-height: 400px; overflow: auto;">
+        <form class="w-100 d-flex justify-content-center">
+            <div class="row w-100 justify-content-center m-0">
+
+                <div class="col-auto px-0 d-flex align-items-center">
+                    <span>{{getMaxId()}}</span>
+                </div>
+
+                <div class="col d-flex">
+
+
+                    <div>
+                        <div class="row m-0">
+                            <div class="col">
+                                <span style="font-size: 0.8em;">Tipo de coordenadas</span>
+                                <div>
+                                    <select id="inputState"
+                                        class="form-control form-select form-select-sm form-control-sm"
+                                        [formControl]="type" style="font-size: 0.9em; height: 31px;">
+                                        <option selected value="0">Selecione o formato</option>
+                                        <option value="1">Geográficas - Decimal</option>
+                                        <option value="2">Geográficas - GMS</option>
+                                        <option value="3">Projetadas (UTM)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <ng-container *ngIf="type.value != 0">
+                            <div class="row m-0">
+                                <div>
+
+                                    <span style="font-size: 0.8em;">SRC</span>
+                                    <button (click)="openInfo()"
+                                        class="align-items-center btn btn-group btn-sm d-flex ms-1 p-0 d-inline-flex">
+                                        <i class="material-icons-outlined" style="font-size: 0.9em">
+                                            info
+                                        </i>
+                                    </button>
+
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm px-1" [(value)]="epsg">
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+
+
+                    </div>
+                    <ng-container *ngIf="type.value == 0">
+                        <div class="col d-flex align-items-center px-1">
+                            <span>Selecione uma opção ao lado</span>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="type.value == 1">
+                        <div class="col">
+                            <div class="row m-0" style="flex-flow: nowrap;">
+                                <div class="col">
+                                    <span style="font-size: 0.8em;">Latitude (°)</span>
+
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm px-1"
+                                            placeholder="-23.45872" [(ngModel)]="coordY"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row m-0" style="flex-flow: nowrap;">
+                                <div class="col">
+                                    <span class="px-0" style="font-size: 0.8em;">Longitude (°)</span>
+
+                                    <div>
+                                        <input type="text" class="form-control form-control-sm px-1"
+                                            placeholder="-46.23454" [(ngModel)]="coordX"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+
+                                    </div>
+
+                                    <!-- <span class="col-auto px-1">°</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="type.value == 2">
+                        <div class="col mx-2">
+
+                            <div>
+                                <span for="lon" class="row m-0" style="font-size: 0.8em;">Latitude</span>
+                                <div class="d-flex m-0 align-items-center">
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 2.2em;"
+                                            placeholder="23" maxlength="2" [(ngModel)]="coordY"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">°</span>
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 2.2em;"
+                                            placeholder="45" maxlength="2" [(ngModel)]="coordYMin"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">′</span>
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 6em;"
+                                            placeholder="12.03" [(ngModel)]="coordYSec"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">″</span>
+
+                                    <form [formControl]="gmsNS" ngDefaultControl>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-check-input m-0" type="radio" name="flexRadioLat"
+                                                value="1" id="flexRadioDefault1">
+                                            <label class="form-check-label ps-1" for="flexRadioDefault1"
+                                                style="font-size: 0.9em;">
+                                                N
+                                            </label>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-check-input m-0" type="radio" name="flexRadioLat"
+                                                value="-1" id="flexRadioDefault2" checked>
+                                            <label class="form-check-label ps-1" for="flexRadioDefault2"
+                                                style="font-size: 0.9em;">
+                                                S
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div>
+
+                                <span for="lon" class="row m-0" style="font-size: 0.8em;">Longitude</span>
+
+                                <div class="d-flex m-0 align-items-center">
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 2.2em;"
+                                            placeholder="46" maxlength="2" [(ngModel)]="coordX"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">°</span>
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 2.2em;"
+                                            placeholder="55" maxlength="2" [(ngModel)]="coordXMin"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">′</span>
+                                    <div class="p-0">
+                                        <input [appOnlyNumber]="true" type="text"
+                                            class="form-control form-control-sm px-1" style="max-width: 6em;"
+                                            placeholder="12.65" [(ngModel)]="coordXSec"
+                                            [ngModelOptions]="{standalone: true}" numbersOnly>
+                                    </div>
+                                    <span class="col-auto px-1">″</span>
+
+                                    <form [formControl]="gmsWE" ngDefaultControl>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-check-input m-0" type="radio" name="flexRadioLon"
+                                                value="1" id="flexRadioDefault2">
+                                            <label class="form-check-label ps-1" for="flexRadioDefault2"
+                                                style="font-size: 0.9em;">
+                                                E
+                                            </label>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <input class="form-check-input m-0" type="radio" name="flexRadioLon"
+                                                value="-1" id="flexRadioDefault1" checked>
+                                            <label class="form-check-label ps-1" for="flexRadioDefault1"
+                                                style="font-size: 0.9em;">
+                                                W
+                                            </label>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container *ngIf="type.value == 3">
+                        <div class="col">
+                            <div class="row m-0" style="flex-flow: nowrap;">
+                                <div class="col">
+                                    <span style="font-size: 0.8em;">Norte (m)</span>
+                                    <input [appOnlyNumber]="true" type="text" class="form-control form-control-sm px-1"
+                                        placeholder="7397602.87" [(ngModel)]="coordY"
+                                        [ngModelOptions]="{standalone: true}" numbersOnly>
+                                </div>
+                            </div>
+                            <div class="row m-0" style="flex-flow: nowrap;">
+                                <div class="col">
+                                    <span class="px-0" style="font-size: 0.8em;">Leste (m)</span>
+                                    <input [appOnlyNumber]="true" type="text" class="form-control form-control-sm px-1"
+                                        placeholder="304456.10" [(ngModel)]="coordX"
+                                        [ngModelOptions]="{standalone: true}" numbersOnly>
+
+                                    <!-- <span class="col-auto px-1">°</span> -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+
+                </div>
+
+                <div class="col-auto px-0 d-flex align-items-center">
+                    <button class="btn btn-success btn-sm" style="height: min-content;"
+                        (click)="doApply()">Inserir</button>
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+
+</div>

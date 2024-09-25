@@ -1,0 +1,36 @@
+.title {
+    /* margin: -24px -24px 0px -24px !important;
+    padding: 10px 24px; */
+    background: #369;
+    color: #fff;
+    cursor: move;
+    text-align: center;
+    box-shadow: 0 3px 4px #00000033;
+    font-size: 1.1em;    
+    line-height: normal;
+    z-index: 1;
+  }
+
+  .btn-edit {
+    padding: 0.1em;
+    border: 1px solid rgb(194, 194, 194);
+    border-radius: 4px;
+}
+
+    .btn-edit:hover {
+        background-color: #e6e6e6;
+    }
+
+:host .toastr {
+        position: relative;
+        overflow: hidden;
+        margin: 0 0 6px;
+        padding: 15px 15px 15px 50px;
+        width: 100%;
+        border-radius: 3px 3px 3px 3px;
+        background-position: 15px center;
+        background-repeat: no-repeat;
+        background-size: 24px;
+        box-shadow: 0 0 12px #999999;
+        color: #FFFFFF;
+    }

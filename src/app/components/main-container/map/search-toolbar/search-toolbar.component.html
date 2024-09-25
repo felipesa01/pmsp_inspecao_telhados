@@ -1,0 +1,59 @@
+<div class="border rounded  bg-body-tertiary" style="background-color: #e3e3e3;">
+    <div class="d-flex justify-content-center align-items-end p-2">
+        <div class="position-relative" style="width: 100%;">
+            <span class="px-1" style="font-size: 0.9em;">Buscar imóvel ou logradouro:</span>
+            <input #input class="form-control p-1 w-100" type="text"
+                placeholder="Cód. reduzido, inscrição cadastral ou logradouro" style="font-size: 0.9em;"
+                [(ngModel)]="searchWord" (keyup)="onKeyup($event)" />
+            <!-- <input type="text" class="form-control" placeholder="Search..."> -->
+            <button *ngIf="searchWord" type="button" class="btn bg-transparent btn-sm p-0 position-absolute"
+                style="right: 4px; top: 28px;" (click)="clearSearch()">
+                <i style="font-size: 1.2em;" class="material-icons">close</i>
+            </button>
+        </div>
+        <div>
+            <button type="button" class="btn btn-primary btn-sm ms-1" (click)="doSearch()"
+                style="width: 62px; height: 30px;">
+
+                <ng-container *ngIf="isLoading; else bucarTitle">
+                    <div class="d-flex justify-content-center ">
+                        <div class="spinner-border text-light spinner-border-sm" role="status">
+                        </div>
+                    </div>
+                </ng-container>
+
+                <ng-template #bucarTitle>
+                    <span>Buscar</span>
+                </ng-template>
+            </button>
+        </div>
+    </div>
+
+    <div aria-live="polite" toastContainer style="line-height: normal;"></div>
+
+</div>
+
+<div *ngIf="tableData" class="border rounded bg-body-tertiary" style="background-color: #e3e3e3; overflow: auto;">
+    <div class="table-responsive" style="max-height: 100%; font-size: 0.95em; max-height: 100%;">
+        <table class="table table-responsive-xl table-sm table-hover">
+            <thead>
+                <tr class="lh-1">
+                    <th *ngFor="let colName of tableHeader" scope="col" style="min-width: 100px;">{{colNames[colName]}}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of tableData" (click)="onTableClick(row['obj'])">
+                    <td scope="row" *ngFor="let colName of tableHeader"
+                        [matTooltip]="getMatTooltip(row.properties[colName], 18)" matTooltipPosition="right">
+                        {{row.properties[colName] | formatarValores:{fillTerm: '-', limit: 18} }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="tableData" class="border bg-body-tertiary d-flex align-items-center p-1" style="background-color: #e3e3e3">
+    <span style="font-size: 0.8em;">Pré-visualizar</span>
+    <input class="mx-1" type="checkbox">
+</div>

@@ -1,0 +1,11 @@
+<app-modal-general-info (outputData)="setDataFromGeneral($event)" [showAttributes]="true">
+
+    <div class="d-flex justify-content-end align-items-center m-2">
+        <button matTooltip="Sistema Unificado de Aprovação" mat-raised-button
+            style="padding: 0 1px;" (click)="sendToAprova()" matTooltipPosition='left'>
+            <img style="width: 70px; border-radius: 5px;" src="./assets/images/sua.png">
+        </button>
+    </div>
+
+</app-modal-general-info>
+
