@@ -25,7 +25,7 @@
     "allowImportingTsExtensions": true,
     "allowArbitraryExtensions": true,
     
-    "isolatedModules": true, // or `isolatedModules`
+    "verbatimModuleSyntax": true, // or `isolatedModules`
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false
