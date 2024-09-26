@@ -41,16 +41,16 @@ import { DomSanitizer } from '@angular/platform-browser';
 import OLCesium from 'olcs';
 import * as Cesium from 'cesium';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+// import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+// import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { Cartesian3 } from 'cesium';
+import { Rectangle } from 'cesium';
 // import * as GLTFLoader from 'src/assets/3dfiles/GLTFLoader'
 // import * as DRACOLoader from 'src/assets/3dfiles/DRACOLoader'
 
-
 @Injectable()
 export class GeoService implements OnInit {
-
+  
 
 
   map3d: OLCesium;
@@ -330,62 +330,6 @@ export class GeoService implements OnInit {
     });
   };
 
-
-
-
-
-
-  // gltfLoader: GLTFLoader.GLTFLoader;
-  // dracoLoader: DRACOLoader.DRACOLoader;
-
-  // loadGltf = (url, cb) => {
-  //   if (!this.gltfLoader) this.gltfLoader = new GLTFLoader.GLTFLoader();
-  //   if (!this.dracoLoader) {
-  //     this.dracoLoader = new DRACOLoader.DRACOLoader();
-  //     this.dracoLoader.setDecoderPath('./assets/3dfiles/draco');
-  //     this.gltfLoader.setDRACOLoader(this.dracoLoader);
-  //   }
-
-  //   // Load a glTF resource
-  //   this.gltfLoader.load(url,
-  //     gltf => { cb(null, gltf) },
-  //     xhr => {
-  //       // called while loading is progressing
-  //     },
-  //     error => { cb(error); }
-  //   );
-  // }
-
-  // async mainLoadCamera() {
-
-  //   const fileloader = new THREE.FileLoader();
-
-  //   this.loadGltf('src/assets/3dfiles/models/camera.glb', (err, gltf) => {
-  //     if (err) {
-  //       console.error(err);
-  //       return;
-  //     }
-
-  //     const cameraObj = gltf.scene;
-
-  //     const cameraMesh = cameraObj.clone();
-  //     cameraMesh.traverse((node) => {
-  //       if (node.isMesh) {
-  //         node.material = node.material.clone();
-  //       }
-  //     });
-
-  //     cameraMesh.matrixAutoUpdate = false;
-  //     let scale = 1.0;
-  //     // if (!this.pointCloud.projection) scale = 0.1;
-
-  //     cameraMesh.matrix.set(...this.getMatrix(proj4('EPSG:32723', 'EPSG:4326', [304573.29, 7405772.20, 742.74]), [2.07788, 1.24208, -0.591431], scale).elements);
-
-  //     this.map3d.getDataSourceDisplay().defaultDataSource.entities.add(cameraMesh);
-
-  //   });
-  // }
-
   getMatrix(rotation: number[]) {
     var axis = new THREE.Vector3(-rotation[0], -rotation[1], -rotation[2]);
     var angle = axis.length();
@@ -398,98 +342,36 @@ export class GeoService implements OnInit {
     return result;
   }
 
-  getMatrixOriginal(translation, rotation, scale) {
-    var axis = new THREE.Vector3(-rotation[0], -rotation[1], -rotation[2]);
-    var angle = axis.length();
-    // axis.normalize();
-    var matrix = new THREE.Matrix4().makeRotationAxis(axis, angle);
-    // console.log('Antes: ', matrix);
-    matrix.setPosition(new THREE.Vector3(translation[0], translation[1], translation[2]));
-    // console.log('Depois: ', matrix);
-    if (scale != 1.0) {
-      matrix.scale(new THREE.Vector3(scale, scale, scale));
-    }
-    const matrix3 = new THREE.Matrix3().getNormalMatrix(matrix)
-    // console.log('Final: ', new THREE.Matrix3().getNormalMatrix(matrix))
-
-    return new Cesium.Matrix3(...matrix3.transpose().elements);
-  }
-
-  getAxisAngle(a, b, c): [Cesium.Cartesian3, number] {
-    var axis = new THREE.Vector3(a, b, c);
-    var angle = axis.length();
-    // axis.normalize();
-
-    return [new Cesium.Cartesian3(...axis), angle]
-  }
-
   openCameras() {
-
     const fileloader = new THREE.FileLoader();
-    
 
-    fileloader.load('./assets/3dfiles/shots_full.geojson', (data) => {
+    fileloader.load('./assets/3dfiles/shots.geojson', (data) => {
       const geojson = JSON.parse(data as string);
 
       geojson.features.forEach(feat => {
-
         const coords: number[] = proj4('EPSG:32723', 'EPSG:4326', feat.properties.translation)
+        // console.log(proj4('EPSG:32723', 'EPSG:4326', [302818, 7406446]))
         var position = Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2]);
-
-        const rotationMatrix = this.getMatrix(coords);
-        // const quat = Cesium.Quaternion.fromAxisAngle(...this.getAxisAngle(feat.properties.rotation[0], feat.properties.rotation[1], feat.properties.rotation[2]))
-        // const quat = Cesium.Quaternion.fromRotationMatrix(rotationMatrix) 
-
-        const euler = new THREE.Euler().setFromVector3(new THREE.Vector3(-feat.properties.rotation[0], -feat.properties.rotation[1], -feat.properties.rotation[2]));
-
-        const quat = new Cesium.Quaternion(... new THREE.Quaternion().setFromEuler(euler).toArray());
-
+        const rotationMatrix = this.getMatrix(feat.properties.rotation);
+        const quat = Cesium.Quaternion.fromRotationMatrix(rotationMatrix) 
 
         try {
           var ypr = Cesium.HeadingPitchRoll.fromQuaternion(quat);
-          ypr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(Cesium.Math.toDegrees(ypr.heading) - 90),
+          ypr = new Cesium.HeadingPitchRoll(Cesium.Math.toRadians(ypr.heading < 0 ? Cesium.Math.toDegrees(ypr.heading) + 90 : Cesium.Math.toDegrees(ypr.heading) - 90),
             Cesium.Math.toRadians(Cesium.Math.toDegrees(ypr.pitch) - 90),
-            Cesium.Math.toRadians(Cesium.Math.toDegrees(ypr.roll) + 180))
+            Cesium.Math.toRadians(ypr.roll < 0 ? ypr.roll : 180))
 
-          // const head2 = Math.atan2(rotationMatrix[6], rotationMatrix[7]);
-          // const pitch2 = Math.acos(rotationMatrix[8]); ''
-          // const roll2 = -Math.atan2(rotationMatrix[2], rotationMatrix[5])
-
-          var heading = feat.properties.yaw;
-          var pitch = feat.properties.pitch;
-          var roll = feat.properties.roll;
-
-          if (!heading) heading = 0
-          if (!pitch) pitch = 0
-          if (!roll) roll = 0
-          heading = Cesium.Math.toRadians(heading);
-          pitch = Cesium.Math.toRadians(pitch);
-          roll = Cesium.Math.toRadians(roll);
-
-          // var heading = Cesium.Math.toRadians(feat.properties.yaw - 90);
-          // var pitch = Cesium.Math.toRadians(feat.properties.pitch - 90);
-          // var roll = Cesium.Math.toRadians(feat.properties.roll + 180);
-
-          var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-
-          console.log(ypr, hpr);
-
-
-          // var heading = Cesium.Math.toRadians(feat.properties.yaw - 90);
-          // var pitch = Cesium.Math.toRadians(feat.properties.pitch - 90);
-          // var roll = Cesium.Math.toRadians(feat.properties.roll + 180);
-          // var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
           var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, ypr);
 
-
-          const entity2 = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({
-            model: { uri: './assets/3dfiles/models/camera.glb' },
+          const entity = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({
+            model: { uri: './assets/3dfiles/models/camera.glb',
+            // color: new Cesium.Color(1,1,1, 0.95),
+            // colorBlendMode: Cesium.ColorBlendMode['HIGHLIGHT']
+             },
             position: position,
             // orientation: Cesium.Quaternion.fromAxisAngle(result[0], result[1])
-            orientation: orientation
+            orientation: orientation,
           });
-
-          this.scene.camera.flyTo({ destination: position as Cartesian3, orientation: orientation })
         }
         catch (e) {
           console.log(e)
@@ -498,165 +380,33 @@ export class GeoService implements OnInit {
     });
   }
 
-  gltfLoader: GLTFLoader;
-  dracoLoader: DRACOLoader;
-  loadGltf = (url, cb) => {
-    if (!this.gltfLoader) this.gltfLoader = new GLTFLoader();
-    if (!this.dracoLoader) {
-      this.dracoLoader = new DRACOLoader();
-      this.dracoLoader.setDecoderPath('./assets/3dfiles/draco');
-      this.gltfLoader.setDRACOLoader(this.dracoLoader);
+
+  set3dMap() {
+    if (!this.map3d) {
+      this.map3d = new OLCesium({ map: this.map });
+      this.scene = this.map3d.getCesiumScene();
+      Cesium.createWorldTerrainAsync().then(tp => this.scene.terrainProvider = tp);
     }
 
-    // Load a glTF resource
-    this.gltfLoader.load(url,
-      gltf => { cb(null, gltf) },
-      xhr => {
-        // called while loading is progressing
-      },
-      error => { cb(error); }
-    );
-  }
+    this.map3dEnabled = !this.map3dEnabled
+    if (this.map3dEnabled) {
+      this.add3dModel();
+      this.openCameras();
+      this.leaveMainInfoFeaturesFunction();
+    }
+    else{
+      this.setMainInfoFeaturesFunction();
+      // this.scene.primitives.
+    }
+    this.map3d.setEnabled(this.map3dEnabled);
 
-  openCameras2() {
-    
-    function getMatrix(translation, rotation, scale) {
-      var axis = new THREE.Vector3(-rotation[0],
-                                  -rotation[1],
-                                  -rotation[2]);
-      var angle = axis.length();
-      axis.normalize();
-      var matrix = new THREE.Matrix4().makeRotationAxis(axis, angle);
-      matrix.setPosition(new THREE.Vector3(translation[0], translation[1], translation[2]));
-      
-      if (scale != 1.0){
-          matrix.scale(new THREE.Vector3(scale, scale, scale));
-      }
-
-      return matrix.transpose();
-  }
-
-
-    const fileloader = new THREE.FileLoader();
-
-    this.loadGltf('./assets/3dfiles/models/camera.glb', (err, gltf) => {
-      if (err) {
-        console.error(err);
-        return;
-      }
-
-      const cameraObj = gltf.scene;
-
-      fileloader.load('./assets/3dfiles/shots_full.geojson', (data: string) => {
-        const geojson = JSON.parse(data);
-        cameraObj.traverse(obj => {
-          if (obj.material) {
-            obj.material.transparent = true;
-            obj.material.opacity = 0.7;
-          }
-        });
-
-        let i = 0;
-        geojson.features.forEach(feat => {
-          const cameraMesh = cameraObj.clone();
-          cameraMesh.traverse((node) => {
-            if (node.isMesh) {
-              node.material = node.material.clone();
-            }
-          });
-
-          cameraMesh.matrixAutoUpdate = false;
-          let scale = 1.0;
-          // if (!this.pointCloud.projection) scale = 0.1;
-
-          cameraMesh.matrix.set(...getMatrix(feat.properties.translation, feat.properties.rotation, scale).elements);
-
-          // this.scene.scene.add(cameraMesh);
-          // const entity2 = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({model: cameraMesh});
-
-          console.log(cameraMesh);
-
-          i++;
-        });
-      });
-
-    });
   }
 
   async add3dModel() {
-
-    this.map3dEnabled = !this.map3dEnabled;
-    this.map3d = new OLCesium({ map: this.map });
-    this.scene = this.map3d.getCesiumScene();
-
-    Cesium.createWorldTerrainAsync().then(tp => this.scene.terrainProvider = tp);
-
-    const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(2740028);
+    const tileset = await Cesium.Cesium3DTileset.fromIonAssetId(2747102);
     this.scene.primitives.add(tileset)
 
-    // const blueBox = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({
-    //   name: "Blue box",
-    //   position: Cesium.Cartesian3.fromDegrees(-114.0, 40.0, 300000.0),
-
-    //   box: {
-    //     dimensions: new Cesium.Cartesian3(400000.0, 300000.0, 500000.0),
-    //     material: Cesium.Color.BLUE,
-    //   },
-    // });
-
-    // const resource = await Cesium.IonResource.fromAssetId(2742177);
-    // const coords: number[] = proj4('EPSG:32723', 'EPSG:4326', [304573.29, 7405772.20, 742.74])
-    // const result = this.getAxisAngle(2.07788, 1.24208, -0.591431)
-
-    // var position = Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2] + 3);
-    // var heading = Cesium.Math.toRadians(-60.4);
-    // var pitch = Cesium.Math.toRadians(44.0);
-    // var roll = Cesium.Math.toRadians(0);
-    // var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
-
-    // const reverseQuater = Cesium.HeadingPitchRoll.fromQuaternion(orientation)
-
-
-    // const quaternion = Cesium.Quaternion.fromAxisAngle(result[0], result[1])
-    // const hprObject = Cesium.HeadingPitchRoll.fromQuaternion(quaternion);
-
-
-
-    // console.log(Cesium.Math.toDegrees(hprObject.heading), Cesium.Math.toDegrees(hprObject.pitch), Cesium.Math.toDegrees(hprObject.roll));
-    // console.log(Cesium.Math.toDegrees(reverseQuater.heading), Cesium.Math.toDegrees(reverseQuater.pitch), Cesium.Math.toDegrees(reverseQuater.roll));
-
-    // const entity = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({
-    //   model: { uri: './assets/3dfiles/models/camera.glb' },
-    //   position: Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2]),
-    //   // orientation: Cesium.Quaternion.fromAxisAngle(result[0], result[1])
-    //   orientation: Cesium.Quaternion.fromRotationMatrix(this.getMatrix(proj4('EPSG:32723', 'EPSG:4326', [304573.29, 7405772.20, 742.74]), [2.07788, 1.24208, -0.591431], 1))
-    // });
-
-    // var position = Cesium.Cartesian3.fromDegrees(coords[0], coords[1], coords[2] + 3);
-    // var heading = Cesium.Math.toRadians(-60.4-90);
-    // var pitch = Cesium.Math.toRadians(-44.0);
-    // var roll = Cesium.Math.toRadians(180);
-    // var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
-    // var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
-
-    // const entity2 = this.map3d.getDataSourceDisplay().defaultDataSource.entities.add({
-    //   model: { uri: './assets/3dfiles/models/camera.glb' },
-    //   position: position,
-    //   // orientation: Cesium.Quaternion.fromAxisAngle(result[0], result[1])
-    //   orientation: orientation
-    // });
-
-
-
-    this.openCameras2()
-
-
-    // this.mainLoadCamera()
-
-    this.map3d.setEnabled(this.map3dEnabled);
-
-
+    this.scene.camera.flyToBoundingSphere(tileset.boundingSphere)
   }
 
   // changeCursor = (e) => {

@@ -136,7 +136,7 @@ export class MapComponent implements AfterViewInit, OnInit {
 
 	add3dModel() {
 
-		this.geoService.add3dModel();
+		this.geoService.set3dMap();
 
 	}
 

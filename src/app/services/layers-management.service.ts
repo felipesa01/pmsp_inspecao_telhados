@@ -232,6 +232,16 @@ export class LayersManagementService {
 
   tileSources = [
     new TileLayer({
+      source: new XYZ({ url: 'http://mt0.google.com/vt/lyrs=s&hl=en&x={x}&y={y}&z={z}', attributions: '© PMSP' }),
+      properties: {
+        name: '2017',
+        imgThumb: './assets/images/tileThumbs/orto2017.png',
+        categoria: 'Ortofotos'
+      },
+      extent: [-47.050, -23.51, -46.795, -23.375]
+    }),
+
+    new TileLayer({
       source: new XYZ({ url: 'https://intranet.santanadeparnaiba.sp.gov.br/sisgeo/ImagenseFotos/Tiles_Santana_Parnaiba_2017_new/{z}/{x}/{y}.jpg', attributions: '© PMSP' }),
       properties: {
         name: '2017',
